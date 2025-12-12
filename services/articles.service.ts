@@ -37,11 +37,11 @@ export interface UpdateArticleDto {
 
 import { authService } from './auth.service'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_DASHBOARD_API_URL || 'http://localhost:3007'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3007'
 
 class ArticlesService {
   private async fetchApi(endpoint: string, options: RequestInit = {}) {
-    const url = `${API_BASE_URL}/api/articles${endpoint}`
+    const url = `${API_BASE_URL}/articles${endpoint}`
     
     // Get access token from auth service
     const accessToken = authService.getAccessToken()

@@ -159,7 +159,7 @@ function WriteArticleContent() {
     try {
       const formData = new FormData()
       formData.append('image', file)
-      const apiUrl = process.env.NEXT_PUBLIC_DASHBOARD_API_URL || ''
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
       const res = await fetch(apiUrl + '/api/images/upload', {
         method: 'POST',
         body: formData,
