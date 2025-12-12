@@ -12,8 +12,17 @@ export interface LoginResponse {
   user: User;
 }
 
+const ACCESS_TOKEN_KEY = 'phutraco_access_token';
+
 class AuthService {
   private accessToken: string | null = null;
+
+  constructor() {
+    // Restore access token from localStorage on initialization
+    if (typeof window !== 'undefined') {
+      this.accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+    }
+  }
 
   async login(email: string, password: string): Promise<LoginResponse> {
     const response = await fetch(`${API_URL}/auth/login`, {
@@ -32,6 +41,10 @@ class AuthService {
 
     const data: LoginResponse = await response.json();
     this.accessToken = data.accessToken;
+    // Save to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+    }
     return data;
   }
 
@@ -43,11 +56,18 @@ class AuthService {
 
     if (!response.ok) {
       this.accessToken = null;
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+      }
       throw new Error('Failed to refresh token');
     }
 
     const data = await response.json();
     this.accessToken = data.accessToken;
+    // Save to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+    }
     return data.accessToken;
   }
 
@@ -62,6 +82,9 @@ class AuthService {
       });
     } finally {
       this.accessToken = null;
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+      }
     }
   }
 
@@ -76,6 +99,9 @@ class AuthService {
       });
     } finally {
       this.accessToken = null;
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+      }
     }
   }
 
@@ -110,6 +136,9 @@ class AuthService {
       return data.user;
     } catch (error) {
       this.accessToken = null;
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+      }
       return null;
     }
   }
@@ -120,10 +149,16 @@ class AuthService {
 
   setAccessToken(token: string): void {
     this.accessToken = token;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(ACCESS_TOKEN_KEY, token);
+    }
   }
 
   clearAccessToken(): void {
     this.accessToken = null;
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+    }
   }
 
   isAuthenticated(): boolean {
