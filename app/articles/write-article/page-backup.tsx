@@ -160,7 +160,7 @@ function WriteArticleContent() {
       const formData = new FormData()
       formData.append('image', file)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
-      const res = await fetch(apiUrl + '/api/images/upload', {
+      const res = await fetch(apiUrl + '/images/upload', {
         method: 'POST',
         body: formData,
       })
@@ -171,7 +171,7 @@ function WriteArticleContent() {
       if (data.url) {
         url = data.url.startsWith('http') ? data.url : apiUrl + data.url
       } else if (data.filename) {
-        url = apiUrl + '/api/images/' + data.filename
+        url = apiUrl + '/images/' + data.filename
       }
       setArticle(prev => ({ ...prev, thumbnail_url: url }))
       toast({ title: 'Upload thành công', description: 'Ảnh đã được tải lên.' })
