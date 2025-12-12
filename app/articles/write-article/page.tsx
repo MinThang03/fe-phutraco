@@ -152,7 +152,7 @@ function WriteArticleContent() {
       const formData = new FormData()
       formData.append('image', file)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
-      const res = await fetch(apiUrl + '/api/images/upload', {
+      const res = await fetch(apiUrl + '/images/upload', {
         method: 'POST',
         body: formData,
       })
