@@ -26,10 +26,6 @@ export default function ActivityGallery() {
       src: "/construction-company-building.jpg",
       alt: language === "vi" ? "Tiến độ thi công" : "Construction Progress",
     },
-    {
-      src: "/ktct.jpg",
-      alt: language === "vi" ? "Kiểm tra công trình" : "Quality Inspection",
-    },
   ]
 
   return (

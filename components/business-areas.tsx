@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Building,
@@ -11,12 +11,13 @@ import {
   TreePine,
   Droplets,
   BrickWall,
-} from "lucide-react"
-import Link from "next/link"
-import { useLanguage } from "@/lib/language-context"
+  ShieldCheck,
+} from "lucide-react";
+import Link from "next/link";
+import { useLanguage } from "@/lib/language-context";
 
 export default function BusinessAreas() {
-  const { language, t } = useLanguage()
+  const { language, t } = useLanguage();
 
   const areas = [
     {
@@ -32,7 +33,9 @@ export default function BusinessAreas() {
       icon: Factory,
       title: language === "vi" ? "Máy móc thiết bị" : "Machinery Equipment",
       description:
-        language === "vi" ? "Mua bán, cho thuê máy móc thiết bị xây dựng" : "Buy, sell, rent construction machinery",
+        language === "vi"
+          ? "Mua bán, cho thuê máy móc thiết bị xây dựng"
+          : "Buy, sell, rent construction machinery",
       image: "/heavy-construction-equipment-excavator-bulldozer.jpg",
     },
     {
@@ -45,22 +48,33 @@ export default function BusinessAreas() {
       image: "/luxury-hotel-lobby-interior-vietnam.jpg",
     },
     {
-      icon: PaintBucket,
-      title: language === "vi" ? "Trang trí nội thất" : "Interior Design",
+      icon: ShieldCheck,
+      title:
+        language === "vi"
+          ? "Chuyển đổi số & An ninh mạng"
+          : "Digital Transformation & Cybersecurity",
       description:
-        language === "vi" ? "Thiết kế và thi công nội ngoại thất" : "Interior and exterior design and construction",
-      image: "/trangtrinoithat.jpg",
+        language === "vi"
+          ? "Tư vấn, triển khai chuyển đổi số và giải pháp an ninh mạng toàn diện"
+          : "Consulting and implementation of digital transformation and comprehensive cybersecurity solutions",
+      image: "/images/cds-anm.jpeg  ",
     },
     {
       icon: BrickWall,
       title: language === "vi" ? "Vật liệu xây dựng" : "Building Materials",
-      description: language === "vi" ? "Sản xuất và kinh doanh VLXD" : "Manufacturing and trading building materials",
+      description:
+        language === "vi"
+          ? "Sản xuất và kinh doanh VLXD"
+          : "Manufacturing and trading building materials",
       image: "/vlxd.jpg",
     },
     {
       icon: Droplets,
       title: language === "vi" ? "Hóa chất & Sơn" : "Chemicals & Paint",
-      description: language === "vi" ? "Cung cấp hóa chất và sơn công nghiệp" : "Industrial chemicals and paint supply",
+      description:
+        language === "vi"
+          ? "Cung cấp hóa chất và sơn công nghiệp"
+          : "Industrial chemicals and paint supply",
       image: "/hcvs.jpg",
     },
     {
@@ -75,31 +89,45 @@ export default function BusinessAreas() {
     {
       icon: Ship,
       title: language === "vi" ? "Xuất nhập khẩu" : "Import Export",
-      description: language === "vi" ? "Thương mại quốc tế đa ngành" : "Multi-sector international trade",
+      description:
+        language === "vi"
+          ? "Thương mại quốc tế đa ngành"
+          : "Multi-sector international trade",
       image: "/xnk.jpg",
     },
     {
       icon: Warehouse,
       title: language === "vi" ? "Cho thuê kho bãi" : "Warehouse Rental",
-      description: language === "vi" ? "Hệ thống kho bãi, nhà xưởng hiện đại" : "Modern warehouse and factory system",
+      description:
+        language === "vi"
+          ? "Hệ thống kho bãi, nhà xưởng hiện đại"
+          : "Modern warehouse and factory system",
       image: "/ctkb.jpg",
     },
     {
       icon: TreePine,
       title: language === "vi" ? "Đầu tư BĐS" : "Real Estate Investment",
       description:
-        language === "vi" ? "Khu đô thị, du lịch, khu công nghiệp" : "Urban areas, tourism, industrial zones",
+        language === "vi"
+          ? "Khu đô thị, du lịch, khu công nghiệp"
+          : "Urban areas, tourism, industrial zones",
       image: "/bds.jpg",
     },
-  ]
+  ];
 
   return (
     <section className="py-24 bg-muted">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-accent font-medium tracking-widest mb-4">{t("business.label")}</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 text-balance">{t("business.title")}</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">{t("business.desc")}</p>
+          <p className="text-accent font-medium tracking-widest mb-4">
+            {t("business.label")}
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 text-balance">
+            {t("business.title")}
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            {t("business.desc")}
+          </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -123,12 +151,14 @@ export default function BusinessAreas() {
                 <h3 className="font-semibold text-foreground mb-1 text-sm group-hover:text-accent transition-colors">
                   {area.title}
                 </h3>
-                <p className="text-xs text-muted-foreground line-clamp-2">{area.description}</p>
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {area.description}
+                </p>
               </div>
             </Link>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
