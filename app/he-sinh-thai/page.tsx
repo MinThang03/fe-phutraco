@@ -1,18 +1,21 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { MapPin, Building2 } from "lucide-react"
+import { MapPin, Building2, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 const subsidiaries = [
   {
     name: "CTCP Đầu tư Thương mại CMC",
+    slug: "cmc-corporation",
     field: "Đầu tư & Thương mại",
     description:
       "Chuyên về đầu tư tài chính và thương mại đa ngành, là cánh tay đầu tư chiến lược của Phutraco Holding.",
     location: "Hưng Yên",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80",
+    image: "images/CMC CORPORATION.jpg",
   },
   {
     name: "CTCP Đầu tư Khu du lịch Quốc tế Lương Sơn",
+    slug: "luong-son-resort",
     field: "Du lịch nghỉ dưỡng",
     description: "Đầu tư và phát triển Khu du lịch nghỉ dưỡng quốc tế Lương Sơn với diện tích 227 ha tại Hòa Bình.",
     location: "Hòa Bình",
@@ -20,6 +23,7 @@ const subsidiaries = [
   },
   {
     name: "CTCP Bạch Đằng Land",
+    slug: "bach-dang-land",
     field: "Bất động sản",
     description: "Chuyên phát triển các dự án bất động sản nhà ở, khu đô thị và bất động sản thương mại.",
     location: "Hải Phòng",
@@ -27,6 +31,7 @@ const subsidiaries = [
   },
   {
     name: "CTCP IHU Group",
+    slug: "ihu-group",
     field: "Đầu tư đa ngành",
     description: "Tập đoàn đầu tư đa ngành với danh mục đầu tư đa dạng từ hạ tầng đến công nghệ.",
     location: "Hà Nội",
@@ -34,13 +39,15 @@ const subsidiaries = [
   },
   {
     name: "CTCP Tập đoàn VAXUCO",
+    slug: "vaxuco",
     field: "Xây dựng & Thương mại",
     description: "Chuyên thi công các công trình xây dựng quy mô lớn và kinh doanh thương mại vật liệu xây dựng.",
     location: "Hà Nội",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80",
+    image: "images/Vaxuco.jpg",
   },
   {
     name: "CTCP Giải pháp Bền vững Quốc gia",
+    slug: "giai-phap-ben-vung",
     field: "Giải pháp môi trường",
     description: "Cung cấp các giải pháp bền vững về môi trường, năng lượng sạch và phát triển xanh.",
     location: "Hà Nội",
@@ -48,13 +55,15 @@ const subsidiaries = [
   },
   {
     name: "CTCP An ninh mạng Quốc tế ICS",
+    slug: "ics",
     field: "An ninh mạng",
     description: "Cung cấp giải pháp an ninh mạng, bảo mật thông tin cho doanh nghiệp và tổ chức.",
     location: "Hà Nội",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80",
+    image: "images/ICS logo.png",
   },
   {
     name: "CTCP Công nghệ số 3C",
+    slug: "3c-technology",
     field: "Công nghệ số",
     description: "Phát triển và cung cấp các giải pháp công nghệ số, chuyển đổi số cho doanh nghiệp.",
     location: "Hà Nội",
@@ -62,6 +71,7 @@ const subsidiaries = [
   },
   {
     name: "CTCP Khai thác Khoáng sản Phú Thọ",
+    slug: "khai-thac-khoang-san",
     field: "Khai thác khoáng sản",
     description: "Khai thác và chế biến khoáng sản phục vụ ngành xây dựng và công nghiệp.",
     location: "Phú Thọ",
@@ -149,8 +159,9 @@ export default function EcosystemPage() {
             {/* Subsidiaries Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {subsidiaries.map((company) => (
-                <div
+                <Link
                   key={company.name}
+                  href={`/he-sinh-thai/${company.slug}`}
                   className="bg-muted rounded-2xl overflow-hidden group hover:shadow-xl transition-shadow"
                 >
                   <div className="aspect-video overflow-hidden">
@@ -168,12 +179,15 @@ export default function EcosystemPage() {
                       {company.name}
                     </h3>
                     <p className="text-muted-foreground text-sm mb-4 line-clamp-3">{company.description}</p>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="w-4 h-4" />
-                      {company.location}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="w-4 h-4" />
+                        {company.location}
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-accent group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

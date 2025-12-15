@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import Link from "next/link"
 import { MapPin, Calendar, ArrowRight } from "lucide-react"
 
 const categories = ["Tất cả", "Cầu đường", "Cấp thoát nước", "Khách sạn", "Hạ tầng", "Khu đô thị"]
@@ -10,6 +11,7 @@ const categories = ["Tất cả", "Cầu đường", "Cấp thoát nước", "Kh
 const projects = [
   {
     title: "Cao tốc Sóc Trăng - Cần Thơ",
+    slug: "cao-toc-soc-trang-can-tho",
     category: "Cầu đường",
     location: "Sóc Trăng - Cần Thơ",
     year: "2023-2025",
@@ -19,6 +21,7 @@ const projects = [
   },
   {
     title: "Hệ thống cấp nước sạch Hưng Yên",
+    slug: "nuoc-sach-hung-yen",
     category: "Cấp thoát nước",
     location: "Hưng Yên",
     year: "2022-2024",
@@ -27,6 +30,7 @@ const projects = [
   },
   {
     title: "Khách sạn Phương Đông",
+    slug: "khach-san-phuong-dong",
     category: "Khách sạn",
     location: "Hải Phòng",
     year: "2021-2023",
@@ -35,6 +39,7 @@ const projects = [
   },
   {
     title: "Khu đô thị Lương Sơn",
+    slug: "khu-do-thi-luong-son",
     category: "Khu đô thị",
     location: "Hòa Bình",
     year: "2020-2025",
@@ -43,6 +48,7 @@ const projects = [
   },
   {
     title: "Cầu vượt nút giao thông Mỹ Đình",
+    slug: "cau-vuot-my-dinh",
     category: "Cầu đường",
     location: "Hà Nội",
     year: "2022-2023",
@@ -51,6 +57,7 @@ const projects = [
   },
   {
     title: "Nhà máy xử lý nước thải Đà Nẵng",
+    slug: "nha-may-xu-ly-nuoc-thai",
     category: "Cấp thoát nước",
     location: "Đà Nẵng",
     year: "2021-2023",
@@ -59,6 +66,7 @@ const projects = [
   },
   {
     title: "Khu công nghiệp Phú Thọ",
+    slug: "khu-cong-nghiep-phu-tho",
     category: "Hạ tầng",
     location: "Phú Thọ",
     year: "2019-2022",
@@ -67,6 +75,7 @@ const projects = [
   },
   {
     title: "Đường ven biển Hải Phòng",
+    slug: "duong-ven-bien-hai-phong",
     category: "Cầu đường",
     location: "Hải Phòng",
     year: "2020-2022",
@@ -135,8 +144,9 @@ export default function ProjectsPage() {
             {/* Projects Grid */}
             <div className="grid md:grid-cols-2 gap-8">
               {filteredProjects.map((project) => (
-                <div
+                <Link
                   key={project.title}
+                  href={`/du-an/${project.slug}`}
                   className="group bg-muted rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
                 >
                   <div className="aspect-video overflow-hidden">
@@ -169,7 +179,7 @@ export default function ProjectsPage() {
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </button>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

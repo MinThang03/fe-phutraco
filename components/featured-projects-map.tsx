@@ -17,6 +17,7 @@ interface ProjectLocation {
   image: string;
   description: string;
   descriptionEn: string;
+  slug?: string;
   mapX: number; // Position on map (0-100)
   mapY: number; // Position on map (0-100)
 }
@@ -24,6 +25,7 @@ const center = { mapX: 22, mapY: 10 }; // Hà Nội (ví dụ)
 const projects: ProjectLocation[] = [
   {
     id: "1",
+    slug: "cao-toc-soc-trang-can-tho",
     title: "Cao tốc Sóc Trăng - Cần Thơ",
     titleEn: "Soc Trang - Can Tho Highway",
     category: "Cầu đường",
@@ -41,6 +43,7 @@ const projects: ProjectLocation[] = [
   },
   {
     id: "2",
+    slug: "nuoc-sach-hung-yen",
     title: "Hệ thống cấp nước sạch Hưng Yên",
     titleEn: "Hung Yen Clean Water System",
     category: "Cấp thoát nước",
@@ -58,6 +61,7 @@ const projects: ProjectLocation[] = [
   },
   {
     id: "3",
+    slug: "khach-san-phuong-dong",
     title: "Khách sạn Phương Đông",
     titleEn: "Phuong Dong Hotel",
     category: "Khách sạn",
@@ -75,6 +79,7 @@ const projects: ProjectLocation[] = [
   },
   {
     id: "4",
+    slug: "khu-do-thi-luong-son",
     title: "Khu đô thị Lương Sơn",
     titleEn: "Luong Son Urban Area",
     category: "Hạ tầng",
@@ -92,6 +97,7 @@ const projects: ProjectLocation[] = [
   },
   {
     id: "5",
+    slug: "cau-vuot-my-dinh",
     title: "Cầu vượt nút giao thông Mỹ Đình",
     titleEn: "My Dinh Interchange Overpass",
     category: "Cầu đường",
@@ -109,6 +115,7 @@ const projects: ProjectLocation[] = [
   },
   {
     id: "6",
+    slug: "nha-may-xu-ly-nuoc-thai",
     title: "Nhà máy xử lý nước thải Đà Nẵng",
     titleEn: "Da Nang Wastewater Treatment",
     category: "Cấp thoát nước",
@@ -184,9 +191,9 @@ export default function FeaturedProjectsMap() {
               </p>
 
               {projects.map((project) => (
-                <button
+                <Link
                   key={project.id}
-                  onClick={() => setSelectedProject(project)}
+                  href={`/du-an/${project.slug}`}
                   onMouseEnter={() => setHoveredProjectId(project.id)}
                   onMouseLeave={() => setHoveredProjectId(null)}
                   className={`w-full text-left p-4 rounded-xl transition-all duration-300 ${
@@ -219,15 +226,15 @@ export default function FeaturedProjectsMap() {
                       >
                         {language === "vi"
                           ? project.category
-                          : project.categoryEn}{" "}
-                        •{" "}
+                          : project.categoryEn} {" "}
+                        • {" "}
                         {language === "vi"
                           ? project.location
                           : project.locationEn}
                       </p>
                     </div>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
 
@@ -432,7 +439,7 @@ export default function FeaturedProjectsMap() {
                       asChild
                       className="flex-1 bg-primary hover:bg-primary/90 h-12"
                     >
-                      <Link href="/du-an">
+                      <Link href={`/du-an/${selectedProject?.slug ?? ""}`}>
                         {language === "vi"
                           ? "Xem chi tiết dự án"
                           : "View Project Details"}

@@ -1,5 +1,6 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import Link from "next/link"
 import {
   Building,
   Truck,
@@ -12,12 +13,14 @@ import {
   Droplets,
   BrickWall,
   ShoppingBag,
+  ArrowRight,
 } from "lucide-react"
 
 const businessAreas = [
   {
     icon: Building,
     title: "Xây dựng công trình",
+    slug: "xay-dung-cong-trinh",
     description:
       "Thi công xây dựng các công trình dân dụng, công nghiệp, giao thông, thủy lợi và hạ tầng kỹ thuật với quy mô lớn, chất lượng cao.",
     services: [
@@ -32,6 +35,7 @@ const businessAreas = [
   {
     icon: Factory,
     title: "Máy móc thiết bị",
+    slug: "may-moc-thiet-bi",
     description:
       "Cung cấp, mua bán và cho thuê các loại máy móc, thiết bị xây dựng hiện đại phục vụ thi công công trình.",
     services: ["Mua bán máy móc xây dựng", "Cho thuê thiết bị thi công", "Bảo trì, sửa chữa", "Nhập khẩu thiết bị"],
@@ -40,21 +44,30 @@ const businessAreas = [
   {
     icon: Hotel,
     title: "Khách sạn - Nhà hàng - Giải trí",
+    slug: "khach-san-nha-hang",
     description:
       "Đầu tư và vận hành các dự án khách sạn, nhà hàng và khu giải trí cao cấp, mang đến trải nghiệm đẳng cấp cho khách hàng.",
     services: ["Khách sạn cao cấp", "Nhà hàng ẩm thực", "Khu vui chơi giải trí", "Dịch vụ sự kiện"],
     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
   },
   {
-    icon: PaintBucket,
-    title: "Trang trí nội ngoại thất",
-    description: "Thiết kế và thi công nội ngoại thất chuyên nghiệp cho các công trình dân dụng và thương mại.",
-    services: ["Thiết kế nội thất", "Thi công nội thất", "Trang trí ngoại thất", "Cung cấp vật liệu"],
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
+    icon: Factory,
+    title: "Chuyển đổi số - An ninh mạng",
+    slug: "chuyen-doi-so",
+    description:
+      "Triển khai giải pháp chuyển đổi số, nền tảng số hoá doanh nghiệp và dịch vụ bảo mật, an ninh mạng đảm bảo vận hành an toàn cho hệ thống thông tin.",
+    services: [
+      "Tư vấn chuyển đổi số",
+      "Phát triển nền tảng số",
+      "Giải pháp an ninh mạng",
+      "Đào tạo & hỗ trợ vận hành",
+    ],
+    image: "/images/cds-anm.jpeg",
   },
   {
     icon: BrickWall,
     title: "Vật liệu xây dựng",
+    slug: "vat-lieu-xay-dung",
     description: "Sản xuất và kinh doanh các loại vật liệu xây dựng chất lượng cao đáp ứng tiêu chuẩn quốc tế.",
     services: ["Sản xuất VLXD", "Phân phối vật liệu", "Cung cấp bê tông", "Vật liệu hoàn thiện"],
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
@@ -62,6 +75,7 @@ const businessAreas = [
   {
     icon: Droplets,
     title: "Hóa chất & Sơn",
+    slug: "hoa-chat-son",
     description: "Cung cấp các loại hóa chất công nghiệp và sơn chất lượng cao cho ngành xây dựng và sản xuất.",
     services: ["Hóa chất công nghiệp", "Sơn xây dựng", "Chất phụ gia", "Hóa chất bảo vệ"],
     image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
@@ -69,6 +83,7 @@ const businessAreas = [
   {
     icon: ShoppingBag,
     title: "Đại lý mua bán ký gửi",
+    slug: "dai-ly-mua-ban",
     description: "Dịch vụ đại lý mua bán và ký gửi các loại hàng hóa, vật tư phục vụ nhu cầu đa dạng của khách hàng.",
     services: ["Mua bán ký gửi", "Đại lý phân phối", "Môi giới thương mại", "Dịch vụ kho bãi"],
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
@@ -76,6 +91,7 @@ const businessAreas = [
   {
     icon: Truck,
     title: "Vận tải - Logistics",
+    slug: "van-tai-logistics",
     description:
       "Cung cấp dịch vụ vận tải và logistics chuyên nghiệp, đảm bảo hàng hóa được vận chuyển an toàn, đúng tiến độ.",
     services: ["Vận tải đường bộ", "Dịch vụ logistics", "Vận chuyển container", "Giao hàng nhanh"],
@@ -84,6 +100,7 @@ const businessAreas = [
   {
     icon: Ship,
     title: "Xuất nhập khẩu",
+    slug: "xuat-nhap-khau",
     description:
       "Hoạt động thương mại quốc tế, xuất nhập khẩu các mặt hàng đa dạng phục vụ thị trường trong và ngoài nước.",
     services: ["Xuất khẩu hàng hóa", "Nhập khẩu thiết bị", "Thông quan hải quan", "Tư vấn XNK"],
@@ -92,6 +109,7 @@ const businessAreas = [
   {
     icon: Warehouse,
     title: "Cho thuê kho bãi - Nhà xưởng",
+    slug: "cho-thue-kho-bai",
     description:
       "Hệ thống kho bãi và nhà xưởng hiện đại cho thuê, đáp ứng nhu cầu lưu trữ và sản xuất của doanh nghiệp.",
     services: ["Kho bãi tiêu chuẩn", "Nhà xưởng công nghiệp", "Kho lạnh", "Bãi container"],
@@ -100,6 +118,7 @@ const businessAreas = [
   {
     icon: TreePine,
     title: "Đầu tư khu đô thị - Du lịch - Công nghiệp",
+    slug: "dau-tu-bat-dong-san",
     description:
       "Đầu tư phát triển các dự án bất động sản quy mô lớn bao gồm khu đô thị, khu du lịch nghỉ dưỡng và khu công nghiệp.",
     services: ["Khu đô thị mới", "Resort nghỉ dưỡng", "Khu công nghiệp", "Hạ tầng kỹ thuật"],
@@ -168,7 +187,7 @@ export default function BusinessAreasPage() {
                       <h3 className="text-2xl font-bold text-foreground">{area.title}</h3>
                     </div>
                     <p className="text-muted-foreground mb-6 leading-relaxed">{area.description}</p>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3 mb-6">
                       {area.services.map((service) => (
                         <div key={service} className="flex items-center gap-2 text-sm">
                           <div className="w-2 h-2 bg-accent rounded-full" />
@@ -176,6 +195,13 @@ export default function BusinessAreasPage() {
                         </div>
                       ))}
                     </div>
+                    <Link
+                      href={`/linh-vuc-kinh-doanh/${area.slug}`}
+                      className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                    >
+                      Xem chi tiết
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </div>
               ))}
