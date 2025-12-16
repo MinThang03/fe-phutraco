@@ -78,7 +78,7 @@ const businessAreas = [
     slug: "hoa-chat-son",
     description: "Cung cấp các loại hóa chất công nghiệp và sơn chất lượng cao cho ngành xây dựng và sản xuất.",
     services: ["Hóa chất công nghiệp", "Sơn xây dựng", "Chất phụ gia", "Hóa chất bảo vệ"],
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
+    image: "hcvs2.jpg",
   },
   {
     icon: ShoppingBag,
@@ -104,7 +104,7 @@ const businessAreas = [
     description:
       "Hoạt động thương mại quốc tế, xuất nhập khẩu các mặt hàng đa dạng phục vụ thị trường trong và ngoài nước.",
     services: ["Xuất khẩu hàng hóa", "Nhập khẩu thiết bị", "Thông quan hải quan", "Tư vấn XNK"],
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
+    image: "xnk.jpg",
   },
   {
     icon: Warehouse,

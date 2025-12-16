@@ -51,7 +51,7 @@ const subsidiaries = [
     field: "Giải pháp môi trường",
     description: "Cung cấp các giải pháp bền vững về môi trường, năng lượng sạch và phát triển xanh.",
     location: "Hà Nội",
-    image: "https://images.unsplash.com/photo-1569163139394-de4e4f43e4e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80",
+    image: "gpbv.jpg",
   },
   {
     name: "CTCP An ninh mạng Quốc tế ICS",
@@ -67,7 +67,7 @@ const subsidiaries = [
     field: "Công nghệ số",
     description: "Phát triển và cung cấp các giải pháp công nghệ số, chuyển đổi số cho doanh nghiệp.",
     location: "Hà Nội",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80",
+    image: "tech3c.jpg",
   },
   {
     name: "CTCP Khai thác Khoáng sản Phú Thọ",
@@ -75,7 +75,7 @@ const subsidiaries = [
     field: "Khai thác khoáng sản",
     description: "Khai thác và chế biến khoáng sản phục vụ ngành xây dựng và công nghiệp.",
     location: "Phú Thọ",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80",
+    image: "kkpt.jpg",
   },
 ]
 
