@@ -10,8 +10,8 @@ export default function AboutPreview() {
 
   const stats = [
     { icon: Calendar, value: "2005", label: t("about.yearFounded") },
-    { icon: Building2, value: "500+", label: t("about.projects") },
-    { icon: Users, value: "1000+", label: t("about.employees") },
+    { icon: Building2, value: "20+", label: t("about.projects") },
+    { icon: Users, value: "50+", label: t("about.employees") },
     { icon: Award, value: "50+", label: t("about.awards") },
   ]
 
