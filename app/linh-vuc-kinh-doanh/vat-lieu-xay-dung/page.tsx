@@ -1,9 +1,13 @@
+"use client"
+
+import { useLanguage } from "@/lib/language-context"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { BrickWall, CheckCircle, ArrowRight, Phone } from "lucide-react"
 import Link from "next/link"
 
 export default function VatLieuXayDungPage() {
+  const { language } = useLanguage()
   return (
     <>
       <Header />
@@ -21,19 +25,19 @@ export default function VatLieuXayDungPage() {
               <div className="max-w-3xl">
                 <div className="flex items-center gap-3 mb-6">
                   <BrickWall className="w-12 h-12 text-accent" />
-                  <span className="text-accent font-medium tracking-widest">LĨNH VỰC KINH DOANH</span>
+                  <span className="text-accent font-medium tracking-widest">{language === "vi" ? "LĨNH VỰC KINH DOANH" : "BUSINESS AREAS"}</span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-                  Vật liệu xây dựng
+                  {language === "vi" ? "Vật liệu xây dựng" : "Building Materials"}
                 </h1>
                 <p className="text-xl text-white/90 mb-8">
-                  Sản xuất và kinh doanh các loại vật liệu xây dựng chất lượng cao đáp ứng tiêu chuẩn quốc tế
+                  {language === "vi" ? "Sản xuất và kinh doanh các loại vật liệu xây dựng chất lượng cao đáp ứng tiêu chuẩn quốc tế" : "Manufacture and trade high-quality building materials meeting international standards"}
                 </p>
                 <Link
                   href="/lien-he"
                   className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors"
                 >
-                  Liên hệ tư vấn
+                  {language === "vi" ? "Liên hệ tư vấn" : "Contact Consultation"}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -45,30 +49,34 @@ export default function VatLieuXayDungPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
               <div>
-                <p className="text-accent font-medium tracking-widest mb-4">GIỚI THIỆU</p>
+                <p className="text-accent font-medium tracking-widest mb-4">{language === "vi" ? "GIỚI THIỆU" : "INTRODUCTION"}</p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                  Nguồn vật liệu chất lượng cao
+                  {language === "vi" ? "Nguồn vật liệu chất lượng cao" : "High-Quality Material Source"}
                 </h2>
                 <p className="text-muted-foreground text-lg mb-6">
-                  Phutraco Holding là đơn vị hàng đầu trong lĩnh vực sản xuất và kinh doanh vật liệu xây dựng. 
-                  Với nhà máy sản xuất hiện đại và mạng lưới phân phối rộng khắp, chúng tôi cung cấp đầy đủ các 
-                  loại vật liệu từ thô đến hoàn thiện cho mọi công trình.
+                  {language === "vi" 
+                    ? "Phutraco Holding là đơn vị hàng đầu trong lĩnh vực sản xuất và kinh doanh vật liệu xây dựng. Với nhà máy sản xuất hiện đại và mạng lưới phân phối rộng khắp, chúng tôi cung cấp đầy đủ các loại vật liệu từ thô đến hoàn thiện cho mọi công trình."
+                    : "Phutraco Holding is a leading unit in the production and trading of building materials. With modern manufacturing facilities and a wide distribution network, we supply a complete range of materials from raw to finished for all projects."
+                  }
                 </p>
                 <p className="text-muted-foreground text-lg mb-8">
-                  Sản phẩm của chúng tôi đáp ứng tiêu chuẩn TCVN, ASTM, đảm bảo chất lượng ổn định và giá cả cạnh tranh.
+                  {language === "vi"
+                    ? "Sản phẩm của chúng tôi đáp ứng tiêu chuẩn TCVN, ASTM, đảm bảo chất lượng ổn định và giá cả cạnh tranh."
+                    : "Our products meet TCVN and ASTM standards, ensuring stable quality and competitive prices."
+                  }
                 </p>
                 <div className="grid grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">3</div>
-                    <div className="text-sm text-muted-foreground">Nhà máy sản xuất</div>
+                    <div className="text-sm text-muted-foreground">{language === "vi" ? "Nhà máy sản xuất" : "Manufacturing Plants"}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">50+</div>
-                    <div className="text-sm text-muted-foreground">Đại lý toàn quốc</div>
+                    <div className="text-sm text-muted-foreground">{language === "vi" ? "Đại lý toàn quốc" : "National Distributors"}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">100%</div>
-                    <div className="text-sm text-muted-foreground">Tiêu chuẩn chất lượng</div>
+                    <div className="text-sm text-muted-foreground">{language === "vi" ? "Tiêu chuẩn chất lượng" : "Quality Standards"}</div>
                   </div>
                 </div>
               </div>
@@ -84,42 +92,54 @@ export default function VatLieuXayDungPage() {
             </div>
 
             <div className="text-center mb-12">
-              <p className="text-accent font-medium tracking-widest mb-4">SẢN PHẨM</p>
+              <p className="text-accent font-medium tracking-widest mb-4">{language === "vi" ? "SẢN PHẨM" : "PRODUCTS"}</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Danh mục sản phẩm đa dạng
+                {language === "vi" ? "Danh mục sản phẩm đa dạng" : "Diverse Product Categories"}
               </h2>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "Xi măng & Bê tông",
-                  items: ["Xi măng PCB30, PCB40", "Bê tông thương phẩm", "Bê tông tươi", "Cốt liệu xây dựng"],
+                  title: language === "vi" ? "Xi măng & Bê tông" : "Cement & Concrete",
+                  items: language === "vi" 
+                    ? ["Xi măng PCB30, PCB40", "Bê tông thương phẩm", "Bê tông tươi", "Cốt liệu xây dựng"]
+                    : ["Portland Cement PCB30, PCB40", "Commercial concrete", "Ready-mix concrete", "Aggregate"],
                   image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
                 },
                 {
-                  title: "Gạch & Ngói",
-                  items: ["Gạch ống, gạch đặc", "Gạch men, gạch lát nền", "Ngói lợp", "Gạch trang trí"],
+                  title: language === "vi" ? "Gạch & Ngói" : "Bricks & Tiles",
+                  items: language === "vi"
+                    ? ["Gạch ống, gạch đặc", "Gạch men, gạch lát nền", "Ngói lợp", "Gạch trang trí"]
+                    : ["Hollow & solid bricks", "Glazed tiles & floor tiles", "Roof tiles", "Decorative tiles"],
                   image: "https://images.unsplash.com/photo-1615857224439-ecaf0c731471?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
                 },
                 {
-                  title: "Sắt thép",
-                  items: ["Thép xây dựng", "Thép hình", "Lưới thép hàn", "Tôn lợp"],
+                  title: language === "vi" ? "Sắt thép" : "Steel & Iron",
+                  items: language === "vi"
+                    ? ["Thép xây dựng", "Thép hình", "Lưới thép hàn", "Tôn lợp"]
+                    : ["Construction steel", "Steel profiles", "Welded steel mesh", "Steel sheets"],
                   image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
                 },
                 {
-                  title: "Cát đá",
-                  items: ["Cát xây dựng", "Đá 1x2, 2x4", "Đá mi", "Sỏi lọc"],
+                  title: language === "vi" ? "Cát đá" : "Sand & Aggregate",
+                  items: language === "vi"
+                    ? ["Cát xây dựng", "Đá 1x2, 2x4", "Đá mi", "Sỏi lọc"]
+                    : ["Construction sand", "Stone 1x2, 2x4", "Stone dust", "Filtered gravel"],
                   image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
                 },
                 {
-                  title: "Vật liệu hoàn thiện",
-                  items: ["Sơn nước, sơn dầu", "Keo dán gạch", "Vữa trát tường", "Chống thấm"],
+                  title: language === "vi" ? "Vật liệu hoàn thiện" : "Finishing Materials",
+                  items: language === "vi"
+                    ? ["Sơn nước, sơn dầu", "Keo dán gạch", "Vữa trát tường", "Chống thấm"]
+                    : ["Water paint & enamel", "Tile adhesive", "Wall mortar", "Waterproofing"],
                   image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
                 },
                 {
-                  title: "Vật liệu khác",
-                  items: ["Ống nước", "Dây điện", "Kính xây dựng", "Cửa nhôm kính"],
+                  title: language === "vi" ? "Vật liệu khác" : "Other Materials",
+                  items: language === "vi"
+                    ? ["Ống nước", "Dây điện", "Kính xây dựng", "Cửa nhôm kính"]
+                    : ["Water pipes", "Electrical wire", "Construction glass", "Aluminum glass doors"],
                   image: "https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80",
                 },
               ].map((category) => (
@@ -151,17 +171,29 @@ export default function VatLieuXayDungPage() {
         <section className="py-20 bg-muted">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <p className="text-accent font-medium tracking-widest mb-4">ƯU ĐIỂM</p>
+              <p className="text-accent font-medium tracking-widest mb-4">{language === "vi" ? "ƯU ĐIỂM" : "ADVANTAGES"}</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Tại sao chọn Phutraco?
+                {language === "vi" ? "Tại sao chọn Phutraco?" : "Why Choose Phutraco?"}
               </h2>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                { title: "Chất lượng đảm bảo", description: "Sản phẩm đạt tiêu chuẩn TCVN, có giấy chứng nhận" },
-                { title: "Giá cả cạnh tranh", description: "Giá xuất xưởng, hỗ trợ chiết khấu số lượng lớn" },
-                { title: "Giao hàng nhanh", description: "Mạng lưới kho bãi rộng, giao hàng tận nơi" },
-                { title: "Tư vấn chuyên nghiệp", description: "Đội ngũ kỹ thuật hỗ trợ tư vấn 24/7" },
+                {
+                  title: language === "vi" ? "Chất lượng đảm bảo" : "Quality Guaranteed",
+                  description: language === "vi" ? "Sản phẩm đạt tiêu chuẩn TCVN, có giấy chứng nhận" : "Products meet TCVN standards with certification"
+                },
+                {
+                  title: language === "vi" ? "Giá cả cạnh tranh" : "Competitive Prices",
+                  description: language === "vi" ? "Giá xuất xưởng, hỗ trợ chiết khấu số lượng lớn" : "Factory prices with bulk discounts"
+                },
+                {
+                  title: language === "vi" ? "Giao hàng nhanh" : "Fast Delivery",
+                  description: language === "vi" ? "Mạng lưới kho bãi rộng, giao hàng tận nơi" : "Wide warehouse network with door-to-door delivery"
+                },
+                {
+                  title: language === "vi" ? "Tư vấn chuyên nghiệp" : "Expert Consulting",
+                  description: language === "vi" ? "Đội ngũ kỹ thuật hỗ trợ tư vấn 24/7" : "24/7 technical support and consulting"
+                },
               ].map((advantage) => (
                 <div key={advantage.title} className="bg-background p-6 rounded-2xl text-center hover:shadow-xl transition-shadow">
                   <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
@@ -177,17 +209,17 @@ export default function VatLieuXayDungPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Cần tư vấn vật liệu xây dựng?
+                {language === "vi" ? "Cần tư vấn vật liệu xây dựng?" : "Need Building Material Consultation?"}
               </h2>
               <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Liên hệ với chúng tôi để được tư vấn và báo giá tốt nhất
+                {language === "vi" ? "Liên hệ với chúng tôi để được tư vẕn và báo giá tốt nhất" : "Contact us for consultation and best prices"}
               </p>
               <Link
                 href="/lien-he"
                 className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors"
               >
                 <Phone className="w-5 h-5" />
-                Liên hệ ngay
+                {language === "vi" ? "Liên hệ ngay" : "Contact Now"}
               </Link>
             </div>
           </div>

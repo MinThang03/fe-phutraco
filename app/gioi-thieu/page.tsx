@@ -1,48 +1,52 @@
+"use client"
+
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Award, Target, Eye, Heart, Users, MapPin, FileText } from "lucide-react"
-
-const timeline = [
-  { year: "2005", event: "Thành lập Công ty CP TM & XD Phương Đông" },
-  { year: "2008", event: "Mở rộng hoạt động sang lĩnh vực hạ tầng" },
-  { year: "2012", event: "Thành lập chi nhánh Hải Phòng" },
-  { year: "2015", event: "Đầu tư vào lĩnh vực du lịch nghỉ dưỡng" },
-  { year: "2018", event: "Thành lập chi nhánh Đà Nẵng" },
-  { year: "2020", event: "Chuyển đổi mô hình Tập đoàn Holding" },
-  { year: "2023", event: "Mở rộng hệ sinh thái công nghệ số" },
-]
-
-const values = [
-  {
-    icon: Heart,
-    title: "Tận tâm",
-    description: "Luôn đặt lợi ích khách hàng lên hàng đầu",
-  },
-  {
-    icon: Award,
-    title: "Chất lượng",
-    description: "Cam kết chất lượng trong từng sản phẩm",
-  },
-  {
-    icon: Users,
-    title: "Đoàn kết",
-    description: "Xây dựng đội ngũ gắn kết, vững mạnh",
-  },
-  {
-    icon: Target,
-    title: "Sáng tạo",
-    description: "Không ngừng đổi mới và cải tiến",
-  },
-]
-
-const legalInfo = [
-  { label: "Mã số thuế", value: "0900xxxxxx" },
-  { label: "Ngày cấp", value: "01/01/2005" },
-  { label: "Nơi cấp", value: "Sở KH&ĐT Hưng Yên" },
-  { label: "Vốn điều lệ", value: "500 tỷ đồng" },
-]
+import { useLanguage } from "@/lib/language-context"
 
 export default function AboutPage() {
+  const { t, language } = useLanguage()
+
+  const timeline = [
+    { year: "2005", event: t("timeline.2005") },
+    { year: "2008", event: t("timeline.2008") },
+    { year: "2012", event: t("timeline.2012") },
+    { year: "2015", event: t("timeline.2015") },
+    { year: "2018", event: t("timeline.2018") },
+    { year: "2020", event: t("timeline.2020") },
+    { year: "2023", event: t("timeline.2023") },
+  ]
+
+  const values = [
+    {
+      icon: Heart,
+      title: t("about.dedication"),
+      description: t("about.dedicationDesc"),
+    },
+    {
+      icon: Award,
+      title: t("about.quality"),
+      description: t("about.qualityDesc"),
+    },
+    {
+      icon: Users,
+      title: t("about.unity"),
+      description: t("about.unityDesc"),
+    },
+    {
+      icon: Target,
+      title: t("about.innovation"),
+      description: t("about.innovationDesc"),
+    },
+  ]
+
+  const legalInfo = [
+    { label: t("about.taxCode"), value: "0900xxxxxx" },
+    { label: t("about.issueDate"), value: "01/01/2005" },
+    { label: t("about.issuedBy"), value: language === "vi" ? "Sở KH&ĐT Hưng Yên" : "Hung Yen DPI" },
+    { label: t("about.charteredCapital"), value: language === "vi" ? "500 tỷ đồng" : "500 billion VND" },
+  ]
   return (
     <>
       <Header />
@@ -58,9 +62,9 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-primary/80" />
           <div className="relative h-full flex items-center justify-center text-center">
             <div>
-              <p className="text-accent font-medium tracking-widest mb-4">VỀ CHÚNG TÔI</p>
+              <p className="text-accent font-medium tracking-widest mb-4">{t("about.label")}</p>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-balance">
-                Giới thiệu Phutraco Holding
+                {t("about.heroTitle")}
               </h1>
             </div>
           </div>
@@ -70,27 +74,22 @@ export default function AboutPage() {
         <section className="py-24 bg-background">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <p className="text-accent font-medium tracking-widest mb-4">THƯ NGỎ</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Lời chào từ Ban lãnh đạo</h2>
+              <p className="text-accent font-medium tracking-widest mb-4">{t("about.letterTitle")}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("about.letterSubtitle")}</h2>
             </div>
             <div className="prose prose-lg max-w-none text-muted-foreground">
-              <p className="leading-relaxed mb-6">Kính gửi Quý Khách hàng, Quý Đối tác và Cổ đông,</p>
+              <p className="leading-relaxed mb-6">{t("about.letterP1")}</p>
               <p className="leading-relaxed mb-6">
-                Với hơn 19 năm hình thành và phát triển, Công ty Cổ phần Thương mại và Xây dựng Phương Đông (Phutraco
-                Holding) đã không ngừng lớn mạnh, khẳng định vị thế trong lĩnh vực xây dựng và đầu tư phát triển hạ tầng
-                tại Việt Nam.
+                {t("about.letterP2")}
               </p>
               <p className="leading-relaxed mb-6">
-                Chúng tôi luôn tự hào về đội ngũ cán bộ nhân viên tận tâm, năng động và sáng tạo. Với phương châm "An
-                toàn - Chất lượng - Môi trường - Tiến độ", Phutraco Holding cam kết mang đến những công trình chất lượng
-                cao, góp phần vào sự phát triển bền vững của đất nước.
+                {t("about.letterP3")}
               </p>
               <p className="leading-relaxed mb-6">
-                Thay mặt Ban lãnh đạo Công ty, tôi xin gửi lời cảm ơn chân thành đến Quý Khách hàng, Quý Đối tác đã tin
-                tưởng và đồng hành cùng chúng tôi trong suốt thời gian qua.
+                {t("about.letterP4")}
               </p>
               <p className="text-right font-semibold text-foreground">
-                Tổng Giám đốc
+                {t("about.letterSign")}
                 <br />
                 <span className="text-accent">PHUTRACO HOLDING</span>
               </p>
@@ -102,8 +101,8 @@ export default function AboutPage() {
         <section className="py-24 bg-muted">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <p className="text-accent font-medium tracking-widest mb-4">LỊCH SỬ HÌNH THÀNH</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground text-balance">Hành trình phát triển</h2>
+              <p className="text-accent font-medium tracking-widest mb-4">{t("about.historyLabel")}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground text-balance">{t("about.historyTitle")}</h2>
             </div>
             <div className="relative">
               <div className="absolute left-1/2 top-0 bottom-0 w-px bg-border hidden md:block" />
@@ -139,20 +138,18 @@ export default function AboutPage() {
                 <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center mb-6">
                   <Eye className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4">Tầm nhìn</h3>
+                <h3 className="text-2xl font-bold mb-4">{t("about.vision")}</h3>
                 <p className="text-white/80 leading-relaxed">
-                  Trở thành Tập đoàn đa ngành hàng đầu Việt Nam trong lĩnh vực xây dựng, đầu tư phát triển hạ tầng và
-                  bất động sản. Là đối tác tin cậy của các tổ chức trong và ngoài nước.
+                  {t("about.visionDesc")}
                 </p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-10">
                 <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center mb-6">
                   <Target className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4">Sứ mệnh</h3>
+                <h3 className="text-2xl font-bold mb-4">{t("about.mission")}</h3>
                 <p className="text-white/80 leading-relaxed">
-                  Kiến tạo những công trình chất lượng cao, góp phần phát triển hạ tầng đất nước. Mang đến giá trị bền
-                  vững cho khách hàng, đối tác và cộng đồng thông qua các sản phẩm và dịch vụ xuất sắc.
+                  {t("about.missionDesc")}
                 </p>
               </div>
             </div>
@@ -163,8 +160,8 @@ export default function AboutPage() {
         <section className="py-24 bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <p className="text-accent font-medium tracking-widest mb-4">GIÁ TRỊ CỐT LÕI</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Nền tảng phát triển</h2>
+              <p className="text-accent font-medium tracking-widest mb-4">{t("about.coreValuesLabel")}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("about.coreValuesTitle")}</h2>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {values.map((value) => (
@@ -193,7 +190,7 @@ export default function AboutPage() {
                   <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center">
                     <FileText className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground">Thông tin pháp lý</h3>
+                  <h3 className="text-2xl font-bold text-foreground">{t("about.legalInfoTitle")}</h3>
                 </div>
                 <div className="space-y-4">
                   {legalInfo.map((info) => (
@@ -211,22 +208,22 @@ export default function AboutPage() {
                   <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center">
                     <MapPin className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground">Hệ thống chi nhánh</h3>
+                  <h3 className="text-2xl font-bold text-foreground">{language === "vi" ? "Hệ thống chi nhánh" : "Branch Network"}</h3>
                 </div>
                 <div className="space-y-6">
                   <div className="p-4 bg-muted rounded-xl">
-                    <h4 className="font-semibold text-foreground mb-2">Trụ sở chính</h4>
+                    <h4 className="font-semibold text-foreground mb-2">{language === "vi" ? "Trụ sở chính" : "Head Office"}</h4>
                     <p className="text-muted-foreground text-sm">
                       378 Nguyễn Thiện Thuật, Phường Mỹ Hào, Tỉnh Hưng Yên
                     </p>
                   </div>
                   <div className="p-4 bg-muted rounded-xl">
-                    <h4 className="font-semibold text-foreground mb-2">Chi nhánh Hải Phòng</h4>
-                    <p className="text-muted-foreground text-sm">Thành phố Hải Phòng</p>
+                    <h4 className="font-semibold text-foreground mb-2">{t("footer.haiphong")}</h4>
+                    <p className="text-muted-foreground text-sm">{language === "vi" ? "Thành phố Hải Phòng" : "Hai Phong City"}</p>
                   </div>
                   <div className="p-4 bg-muted rounded-xl">
-                    <h4 className="font-semibold text-foreground mb-2">Chi nhánh Đà Nẵng</h4>
-                    <p className="text-muted-foreground text-sm">Thành phố Đà Nẵng</p>
+                    <h4 className="font-semibold text-foreground mb-2">{t("footer.danang")}</h4>
+                    <p className="text-muted-foreground text-sm">{language === "vi" ? "Thành phố Đà Nẵng" : "Da Nang City"}</p>
                   </div>
                 </div>
               </div>

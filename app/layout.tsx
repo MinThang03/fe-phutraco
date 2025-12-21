@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/images/image.png",
+        url: "/images/logo_phutraco.png",
         type: "image/png",
       },
     ],
-    apple: "/images/image.png",
+    apple: "/images/logo_phutraco.png",
   },
 }
 

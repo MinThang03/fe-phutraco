@@ -4,91 +4,123 @@ import { useState } from "react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Link from "next/link"
+import { useLanguage } from "@/lib/language-context"
 import { MapPin, Calendar, ArrowRight } from "lucide-react"
 
-const categories = ["Tất cả", "Cầu đường", "Cấp thoát nước", "Khách sạn", "Hạ tầng", "Khu đô thị"]
+const getCategories = (language: string) => 
+  language === "vi" 
+    ? ["Tất cả", "Cầu đường", "Cấp thoát nước", "Khách sạn", "Hạ tầng", "Khu đô thị"]
+    : ["All", "Roads & Bridges", "Water Supply & Sewage", "Hotels", "Infrastructure", "Urban Areas"]
 
-const projects = [
+const getProjects = (language: string) => [
   {
-    title: "Cao tốc Sóc Trăng - Cần Thơ",
+    title: language === "vi" ? "Cao tốc Sóc Trăng - Cần Thơ" : "Soc Trang - Can Tho Highway",
     slug: "cao-toc-soc-trang-can-tho",
-    category: "Cầu đường",
-    location: "Sóc Trăng - Cần Thơ",
+    category: language === "vi" ? "Cầu đường" : "Roads & Bridges",
+    location: language === "vi" ? "Sóc Trăng - Cần Thơ" : "Soc Trang - Can Tho",
     year: "2023-2025",
     description:
-      "Dự án cao tốc trọng điểm quốc gia với tổng chiều dài 50km, góp phần kết nối vùng Đồng bằng sông Cửu Long.",
+      language === "vi"
+        ? "Dự án cao tốc trọng điểm quốc gia với tổng chiều dài 50km, góp phần kết nối vùng Đồng bằng sông Cửu Long."
+        : "A national strategic expressway project with a total length of 50km, contributing to connecting the Mekong Delta region.",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Hệ thống cấp nước sạch Hưng Yên",
+    title: language === "vi" ? "Hệ thống cấp nước sạch Hưng Yên" : "Hung Yen Clean Water System",
     slug: "nuoc-sach-hung-yen",
-    category: "Cấp thoát nước",
-    location: "Hưng Yên",
+    category: language === "vi" ? "Cấp thoát nước" : "Water Supply & Sewage",
+    location: language === "vi" ? "Hưng Yên" : "Hung Yen",
     year: "2022-2024",
-    description: "Dự án cấp nước sạch phục vụ hơn 500.000 dân cư với công suất 100.000 m³/ngày đêm.",
+    description:
+      language === "vi"
+        ? "Dự án cấp nước sạch phục vụ hơn 500.000 dân cư với công suất 100.000 m³/ngày đêm."
+        : "A clean water supply project serving more than 500,000 residents with a capacity of 100,000 m³/day.",
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Khách sạn Phương Đông",
+    title: language === "vi" ? "Khách sạn Phương Đông" : "Phuong Dong Hotel",
     slug: "khach-san-phuong-dong",
-    category: "Khách sạn",
-    location: "Hải Phòng",
+    category: language === "vi" ? "Khách sạn" : "Hotels",
+    location: language === "vi" ? "Hải Phòng" : "Hai Phong",
     year: "2021-2023",
-    description: "Khách sạn 5 sao với 200 phòng nghỉ cao cấp, trung tâm hội nghị và các tiện ích đẳng cấp quốc tế.",
+    description:
+      language === "vi"
+        ? "Khách sạn 5 sao với 200 phòng nghỉ cao cấp, trung tâm hội nghị và các tiện ích đẳng cấp quốc tế."
+        : "A 5-star hotel with 200 premium rooms, conference center and international-class facilities.",
     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Khu đô thị Lương Sơn",
+    title: language === "vi" ? "Khu đô thị Lương Sơn" : "Luong Son Urban Area",
     slug: "khu-do-thi-luong-son",
-    category: "Khu đô thị",
-    location: "Hòa Bình",
+    category: language === "vi" ? "Khu đô thị" : "Urban Areas",
+    location: language === "vi" ? "Hòa Bình" : "Hoa Binh",
     year: "2020-2025",
-    description: "Khu đô thị sinh thái 227 ha với đầy đủ tiện ích: biệt thự, sân golf, resort nghỉ dưỡng cao cấp.",
+    description:
+      language === "vi"
+        ? "Khu đô thị sinh thái 227 ha với đầy đủ tiện ích: biệt thự, sân golf, resort nghỉ dưỡng cao cấp."
+        : "Eco-urban area of 227 hectares with complete facilities: villas, golf course, premium resort.",
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Cầu vượt nút giao thông Mỹ Đình",
+    title: language === "vi" ? "Cầu vượt nút giao thông Mỹ Đình" : "My Dinh Overpass",
     slug: "cau-vuot-my-dinh",
-    category: "Cầu đường",
-    location: "Hà Nội",
+    category: language === "vi" ? "Cầu đường" : "Roads & Bridges",
+    location: language === "vi" ? "Hà Nội" : "Hanoi",
     year: "2022-2023",
-    description: "Cầu vượt quy mô lớn giúp giảm ùn tắc giao thông tại nút giao thông quan trọng của thủ đô.",
+    description:
+      language === "vi"
+        ? "Cầu vượt quy mô lớn giúp giảm ùn tắc giao thông tại nút giao thông quan trọng của thủ đô."
+        : "A large-scale overpass that helps reduce traffic congestion at a major intersection in the capital.",
     image: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Nhà máy xử lý nước thải Đà Nẵng",
+    title: language === "vi" ? "Nhà máy xử lý nước thải Đà Nẵng" : "Da Nang Wastewater Treatment Plant",
     slug: "nha-may-xu-ly-nuoc-thai",
-    category: "Cấp thoát nước",
-    location: "Đà Nẵng",
+    category: language === "vi" ? "Cấp thoát nước" : "Water Supply & Sewage",
+    location: language === "vi" ? "Đà Nẵng" : "Da Nang",
     year: "2021-2023",
-    description: "Nhà máy xử lý nước thải công nghệ châu Âu với công suất xử lý 50.000 m³/ngày đêm.",
+    description:
+      language === "vi"
+        ? "Nhà máy xử lý nước thải công nghệ châu Âu với công suất xử lý 50.000 m³/ngày đêm."
+        : "A wastewater treatment plant with European technology with a processing capacity of 50,000 m³/day.",
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Khu công nghiệp Phú Thọ",
+    title: language === "vi" ? "Khu công nghiệp Phú Thọ" : "Phu Tho Industrial Zone",
     slug: "khu-cong-nghiep-phu-tho",
-    category: "Hạ tầng",
-    location: "Phú Thọ",
+    category: language === "vi" ? "Hạ tầng" : "Infrastructure",
+    location: language === "vi" ? "Phú Thọ" : "Phu Tho",
     year: "2019-2022",
-    description: "Khu công nghiệp sạch với hạ tầng hoàn chỉnh, thu hút nhiều nhà đầu tư trong và ngoài nước.",
+    description:
+      language === "vi"
+        ? "Khu công nghiệp sạch với hạ tầng hoàn chỉnh, thu hút nhiều nhà đầu tư trong và ngoài nước."
+        : "A clean industrial zone with complete infrastructure, attracting many domestic and foreign investors.",
     image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
   {
-    title: "Đường ven biển Hải Phòng",
+    title: language === "vi" ? "Đường ven biển Hải Phòng" : "Hai Phong Coastal Road",
     slug: "duong-ven-bien-hai-phong",
-    category: "Cầu đường",
-    location: "Hải Phòng",
+    category: language === "vi" ? "Cầu đường" : "Roads & Bridges",
+    location: language === "vi" ? "Hải Phòng" : "Hai Phong",
     year: "2020-2022",
-    description: "Tuyến đường ven biển dài 15km kết nối các khu du lịch và cảng biển quan trọng.",
+    description:
+      language === "vi"
+        ? "Tuyến đường ven biển dài 15km kết nối các khu du lịch và cảng biển quan trọng."
+        : "A 15km coastal road connecting important tourism areas and sea ports.",
     image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&h=500&q=80",
   },
 ]
 
 export default function ProjectsPage() {
-  const [activeCategory, setActiveCategory] = useState("Tất cả")
+  const { language } = useLanguage()
+  const [activeCategory, setActiveCategory] = useState(language === "vi" ? "Tất cả" : "All")
+  const categories = getCategories(language)
+  const projects = getProjects(language)
 
   const filteredProjects =
-    activeCategory === "Tất cả" ? projects : projects.filter((p) => p.category === activeCategory)
+    activeCategory === (language === "vi" ? "Tất cả" : "All")
+      ? projects
+      : projects.filter((p) => p.category === activeCategory)
 
   return (
     <>
@@ -106,7 +138,9 @@ export default function ProjectsPage() {
           <div className="relative h-full flex items-center justify-center text-center">
             <div>
               <p className="text-accent font-medium tracking-widest mb-4">PHUTRACO HOLDING</p>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-balance">Dự án tiêu biểu</h1>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-balance">
+                {language === "vi" ? "Dự án tiêu biểu" : "Featured Projects"}
+              </h1>
             </div>
           </div>
         </section>
@@ -115,12 +149,16 @@ export default function ProjectsPage() {
         <section className="py-24 bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <p className="text-accent font-medium tracking-widest mb-4">DANH MỤC DỰ ÁN</p>
+              <p className="text-accent font-medium tracking-widest mb-4">
+                {language === "vi" ? "DANH MỤC DỰ ÁN" : "PROJECT PORTFOLIO"}
+              </p>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 text-balance">
-                Những công trình tự hào
+                {language === "vi" ? "Những công trình tự hào" : "Flagship Projects"}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Mỗi dự án là một minh chứng cho cam kết chất lượng và sự chuyên nghiệp của Phutraco Holding
+                {language === "vi"
+                  ? "Mỗi dự án là một minh chứng cho cam kết chất lượng và sự chuyên nghiệp của Phutraco Holding"
+                  : "Each project is a testament to Phutraco Holding's commitment to quality and professionalism"}
               </p>
             </div>
 
@@ -175,7 +213,7 @@ export default function ProjectsPage() {
                     </h3>
                     <p className="text-muted-foreground mb-4">{project.description}</p>
                     <button className="inline-flex items-center text-primary font-medium hover:text-accent transition-colors">
-                      Xem chi tiết
+                      {language === "vi" ? "Xem chi tiết" : "View Details"}
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </button>
                   </div>
@@ -189,8 +227,12 @@ export default function ProjectsPage() {
         <section className="py-24 bg-primary">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <p className="text-accent font-medium tracking-widest mb-4">THƯ VIỆN HÌNH ẢNH</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 text-balance">Hình ảnh thi công</h2>
+              <p className="text-accent font-medium tracking-widest mb-4">
+                {language === "vi" ? "THƯ VIỆN HÌNH ẢNH" : "IMAGE GALLERY"}
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 text-balance">
+                {language === "vi" ? "Hình ảnh thi công" : "Construction Images"}
+              </h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
@@ -217,7 +259,9 @@ export default function ProjectsPage() {
                     />
                   </div>
                   <div className="absolute inset-0 bg-primary/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white font-medium">Xem ảnh</span>
+                    <span className="text-white font-medium">
+                      {language === "vi" ? "Xem ảnh" : "View Image"}
+                    </span>
                   </div>
                 </div>
               ))}

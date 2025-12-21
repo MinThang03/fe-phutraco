@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <Image
-              src="/images/image.png"
+              src="/images/logo_phutraco.png"
               alt="Phutraco Holding Logo"
               width={80}
               height={80}

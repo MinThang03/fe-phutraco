@@ -1,9 +1,13 @@
+"use client"
+
+import { useLanguage } from "@/lib/language-context"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Hotel, CheckCircle, ArrowRight, Phone, Star, Utensils, PartyPopper } from "lucide-react"
 import Link from "next/link"
 
 export default function KhachSanNhaHangPage() {
+  const { language } = useLanguage()
   return (
     <>
       <Header />
@@ -22,19 +26,19 @@ export default function KhachSanNhaHangPage() {
               <div className="max-w-3xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Hotel className="w-12 h-12 text-accent" />
-                  <span className="text-accent font-medium tracking-widest">LĨNH VỰC KINH DOANH</span>
+                  <span className="text-accent font-medium tracking-widest">{language === "vi" ? "LĨNH VỰC KINH DOANH" : "BUSINESS AREAS"}</span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-                  Khách sạn - Nhà hàng - Giải trí
+                  {language === "vi" ? "Khách sạn - Nhà hàng - Giải trí" : "Hotels - Restaurants - Entertainment"}
                 </h1>
                 <p className="text-xl text-white/90 mb-8">
-                  Đầu tư và vận hành các dự án khách sạn, nhà hàng và khu giải trí cao cấp, mang đến trải nghiệm đẳng cấp
+                  {language === "vi" ? "Đầu tư và vận hành các dự án khách sạn, nhà hàng và khu giải trí cao cấp, mang đến trải nghiệm đẳng cấp" : "Invest and operate premium hotel, restaurant and entertainment projects offering luxury experiences"}
                 </p>
                 <Link
                   href="/lien-he"
                   className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors"
                 >
-                  Liên hệ tư vấn
+                  {language === "vi" ? "Liên hệ tư vấn" : "Contact Consultation"}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -47,34 +51,31 @@ export default function KhachSanNhaHangPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-accent font-medium tracking-widest mb-4">GIỚI THIỆU</p>
+                <p className="text-accent font-medium tracking-widest mb-4">{language === "vi" ? "GIỚI THIỆU" : "INTRODUCTION"}</p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                  Trải nghiệm đẳng cấp 5 sao
+                  {language === "vi" ? "Trải nghiệm đẳng cấp 5 sao" : "5-Star Premium Experience"}
                 </h2>
                 <p className="text-muted-foreground text-lg mb-6">
-                  Phutraco Holding tự hào là nhà đầu tư và vận hành các dự án khách sạn, nhà hàng và khu giải trí 
-                  hàng đầu tại Việt Nam. Chúng tôi cam kết mang đến những trải nghiệm độc đáo, sang trọng và đẳng cấp 
-                  quốc tế cho khách hàng.
+                  {language === "vi" ? "Phutraco Holding tự hào là nhà đầu tư và vận hành các dự án khách sạn, nhà hàng và khu giải trí hàng đầu tại Việt Nam. Chúng tôi cam kết mang đến những trải nghiệm độc đáo, sang trọng và đẳng cấp quốc tế cho khách hàng." : "Phutraco Holding is proud to be a leading investor and operator of premium hotel, restaurant and entertainment projects in Vietnam. We are committed to providing unique, luxurious and world-class experiences."}
                 </p>
                 <p className="text-muted-foreground text-lg mb-8">
-                  Với đội ngũ chuyên gia giàu kinh nghiệm trong ngành hospitality, chúng tôi không ngừng đổi mới và 
-                  nâng cao chất lượng dịch vụ, tạo nên những điểm đến được yêu thích nhất.
+                  {language === "vi" ? "Với đội ngũ chuyên gia giàu kinh nghiệm trong ngành hospitality, chúng tôi không ngừng đổi mới và nâng cao chất lượng dịch vụ, tạo nên những điểm đến được yêu thích nhất." : "With a team of experienced hospitality experts, we continuously innovate and improve service quality, creating the most beloved destinations."}
                 </p>
                 <div className="grid grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">10+</div>
-                    <div className="text-sm text-muted-foreground">Cơ sở kinh doanh</div>
+                    <div className="text-sm text-muted-foreground">{language === "vi" ? "Cơ sở kinh doanh" : "Business Facilities"}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">1M+</div>
-                    <div className="text-sm text-muted-foreground">Khách hàng/năm</div>
+                    <div className="text-sm text-muted-foreground">{language === "vi" ? "Khách hàng/năm" : "Customers/Year"}</div>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 text-2xl font-bold text-primary mb-2">
                       <Star className="w-6 h-6 fill-primary" />
                       4.8
                     </div>
-                    <div className="text-sm text-muted-foreground">Đánh giá trung bình</div>
+                    <div className="text-sm text-muted-foreground">{language === "vi" ? "Đánh giá trung bình" : "Average Rating"}</div>
                   </div>
                 </div>
               </div>
@@ -87,8 +88,8 @@ export default function KhachSanNhaHangPage() {
                   />
                 </div>
                 <div className="absolute -bottom-6 -left-6 bg-accent p-6 rounded-2xl shadow-xl">
-                  <p className="text-primary font-bold text-lg">5 ⭐ Hotels</p>
-                  <p className="text-primary/80 text-sm">Tiêu chuẩn quốc tế</p>
+                  <p className="text-primary font-bold text-lg">5 ⭐ {language === "vi" ? "Khách sạn" : "Hotels"}</p>
+                  <p className="text-primary/80 text-sm">{language === "vi" ? "Tiêu chuẩn quốc tế" : "International Standard"}</p>
                 </div>
               </div>
             </div>
@@ -99,9 +100,9 @@ export default function KhachSanNhaHangPage() {
         <section className="py-20 bg-muted">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <p className="text-accent font-medium tracking-widest mb-4">DỊCH VỤ</p>
+              <p className="text-accent font-medium tracking-widest mb-4">{language === "vi" ? "DịCH VỤ" : "SERVICES"}</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Hệ sinh thái dịch vụ toàn diện
+                {language === "vi" ? "Hệ sinh thái dịch vụ toàn diện" : "Comprehensive Service Ecosystem"}
               </h2>
             </div>
 
@@ -215,18 +216,30 @@ export default function KhachSanNhaHangPage() {
         <section className="py-20 bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <p className="text-accent font-medium tracking-widest mb-4">ƯU ĐIỂM</p>
+              <p className="text-accent font-medium tracking-widest mb-4">{language === "vi" ? "UƯ DIỂM" : "ADVANTAGES"}</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Vì sao chọn chúng tôi?
+                {language === "vi" ? "Vì sao chọn chúng tôi?" : "Why Choose Us?"}
               </h2>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                { title: "Vị trí đắc địa", description: "Các cơ sở nằm tại vị trí trung tâm, giao thông thuận tiện" },
-                { title: "Dịch vụ 5 sao", description: "Đội ngũ phục vụ chuyên nghiệp, tận tâm 24/7" },
-                { title: "Tiện nghi hiện đại", description: "Trang thiết bị, nội thất cao cấp, công nghệ tiên tiến" },
-                { title: "Giá cạnh tranh", description: "Chất lượng tốt nhất với mức giá hợp lý, nhiều ưu đãi" },
+                { 
+                  title: language === "vi" ? "Vị trí đắc địa" : "Prime Location", 
+                  description: language === "vi" ? "Các cơ sở nằm tại vị trí trung tâm, giao thông thuận tiện" : "Facilities located in central positions with convenient transportation" 
+                },
+                { 
+                  title: language === "vi" ? "Dịch vụ 5 sao" : "5-Star Service", 
+                  description: language === "vi" ? "Đội ngũ phục vụ chuyên nghiệp, tận tâm 24/7" : "Professional and dedicated 24/7 service team" 
+                },
+                { 
+                  title: language === "vi" ? "Tiện nghi hiện đại" : "Modern Amenities", 
+                  description: language === "vi" ? "Trang thiết bị, nội thất cao cấp, công nghệ tiên tiến" : "Premium equipment, furnishings and cutting-edge technology" 
+                },
+                { 
+                  title: language === "vi" ? "Giá cạnh tranh" : "Competitive Pricing", 
+                  description: language === "vi" ? "Chất lượng tốt nhất với mức giá hợp lý, nhiều ưu đãi" : "Best quality with reasonable prices and special offers" 
+                },
               ].map((advantage) => (
                 <div key={advantage.title} className="text-center">
                   <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -245,10 +258,10 @@ export default function KhachSanNhaHangPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Đặt phòng hoặc tổ chức sự kiện?
+                {language === "vi" ? "Đặt phòng hoặc tổ chức sự kiện?" : "Book a Room or Organize an Event?"}
               </h2>
               <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Liên hệ với chúng tôi để được tư vấn và nhận ưu đãi đặc biệt
+                {language === "vi" ? "Liên hệ với chúng tôi để được tư vẕn và nhận ưu đãi đặc biệt" : "Contact us for consultation and special offers"}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
@@ -256,7 +269,7 @@ export default function KhachSanNhaHangPage() {
                   className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors"
                 >
                   <Phone className="w-5 h-5" />
-                  Liên hệ ngay
+                  {language === "vi" ? "Liên hệ ngay" : "Contact Now"}
                 </Link>
               </div>
             </div>

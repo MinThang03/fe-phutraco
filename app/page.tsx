@@ -7,7 +7,6 @@ import EcosystemPreview from "@/components/ecosystem-preview"
 import FeaturedProjectsMap from "@/components/featured-projects-map"
 import Commitments from "@/components/commitments"
 import NewsPreview from "@/components/news-preview"
-import ActivityGallery from "@/components/activity-gallery"
 
 export default function HomePage() {
   return (
@@ -20,7 +19,6 @@ export default function HomePage() {
         <FeaturedProjectsMap />
         <EcosystemPreview />
         <Commitments />
-        <ActivityGallery />
         <NewsPreview />
       </main>
       <Footer />

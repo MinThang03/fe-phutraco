@@ -1,53 +1,11 @@
+"use client"
+
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { Award, FileCheck, Shield, Medal } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
+// import { Award, FileCheck, Shield, Medal } from "lucide-react"
 
-const certificates = [
-  {
-    title: "Chứng chỉ năng lực xây dựng Hạng I",
-    issuer: "Bộ Xây dựng",
-    year: "2023",
-    description:
-      "Chứng chỉ năng lực hoạt động xây dựng cao nhất, cho phép thi công các công trình quy mô lớn trên toàn quốc.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
-  },
-  {
-    title: "ISO 9001:2015",
-    issuer: "Bureau Veritas",
-    year: "2022",
-    description: "Chứng nhận hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế ISO 9001:2015.",
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
-  },
-  {
-    title: "ISO 14001:2015",
-    issuer: "Bureau Veritas",
-    year: "2022",
-    description: "Chứng nhận hệ thống quản lý môi trường theo tiêu chuẩn quốc tế ISO 14001:2015.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
-  },
-  {
-    title: "ISO 45001:2018",
-    issuer: "Bureau Veritas",
-    year: "2022",
-    description: "Chứng nhận hệ thống quản lý an toàn sức khỏe nghề nghiệp theo tiêu chuẩn ISO 45001:2018.",
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
-  },
-  {
-    title: "Chứng chỉ hành nghề giám sát",
-    issuer: "Bộ Xây dựng",
-    year: "2023",
-    description: "Chứng chỉ hành nghề giám sát thi công xây dựng công trình dân dụng và công nghiệp.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
-  },
-  {
-    title: "Giấy chứng nhận đủ điều kiện hoạt động",
-    issuer: "Sở Xây dựng Hưng Yên",
-    year: "2023",
-    description: "Giấy chứng nhận đủ điều kiện hoạt động trong lĩnh vực xây dựng và tư vấn.",
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
-  },
-]
-
+/* Phần giải thưởng được comment, có thể thêm lại sau khi có giải thưởng
 const awards = [
   {
     icon: Medal,
@@ -70,8 +28,68 @@ const awards = [
     year: "2022",
   },
 ]
+*/
 
 export default function CertificatesPage() {
+  const { t, language } = useLanguage()
+  
+  const certificates = [
+    {
+      title: language === "vi" ? "Chứng chỉ năng lực xây dựng Hạng I" : "Class I Construction Capacity Certificate",
+      issuer: language === "vi" ? "Bộ Xây dựng" : "Ministry of Construction",
+      year: "2023",
+      description: language === "vi"
+        ? "Chứng chỉ năng lực hoạt động xây dựng cao nhất, cho phép thi công các công trình quy mô lớn trên toàn quốc."
+        : "Highest construction capacity certificate, allowing construction of large-scale projects nationwide.",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
+    },
+    {
+      title: "ISO 9001:2015",
+      issuer: "Bureau Veritas",
+      year: "2022",
+      description: language === "vi" 
+        ? "Chứng nhận hệ thống quản lý chất lượng theo tiêu chuẩn quốc tế ISO 9001:2015." 
+        : "Quality management system certification according to ISO 9001:2015 international standard.",
+      image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
+    },
+    {
+      title: "ISO 14001:2015",
+      issuer: "Bureau Veritas",
+      year: "2022",
+      description: language === "vi"
+        ? "Chứng nhận hệ thống quản lý môi trường theo tiêu chuẩn quốc tế ISO 14001:2015."
+        : "Environmental management system certification according to ISO 14001:2015 international standard.",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
+    },
+    {
+      title: "ISO 45001:2018",
+      issuer: "Bureau Veritas",
+      year: "2022",
+      description: language === "vi"
+        ? "Chứng nhận hệ thống quản lý an toàn sức khỏe nghề nghiệp theo tiêu chuẩn ISO 45001:2018."
+        : "Occupational health and safety management system certification according to ISO 45001:2018 standard.",
+      image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
+    },
+    {
+      title: language === "vi" ? "Chứng chỉ hành nghề giám sát" : "Supervision Practice Certificate",
+      issuer: language === "vi" ? "Bộ Xây dựng" : "Ministry of Construction",
+      year: "2023",
+      description: language === "vi"
+        ? "Chứng chỉ hành nghề giám sát thi công xây dựng công trình dân dụng và công nghiệp."
+        : "Construction supervision practice certificate for civil and industrial projects.",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
+    },
+    {
+      title: language === "vi" ? "Giấy chứng nhận đủ điều kiện hoạt động" : "Operation Eligibility Certificate",
+      issuer: language === "vi" ? "Sở Xây dựng Hưng Yên" : "Hung Yen Department of Construction",
+      year: "2023",
+      description: language === "vi"
+        ? "Giấy chứng nhận đủ điều kiện hoạt động trong lĩnh vực xây dựng và tư vấn."
+        : "Certificate of eligibility to operate in construction and consulting fields.",
+      image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=400&q=80",
+    },
+  ]
+
   return (
     <>
       <Header />
@@ -89,13 +107,14 @@ export default function CertificatesPage() {
             <div>
               <p className="text-accent font-medium tracking-widest mb-4">PHUTRACO HOLDING</p>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-balance">
-                Chứng chỉ & Giải thưởng
+                {t("cert.heroTitle")}
               </h1>
             </div>
           </div>
         </section>
 
         {/* Awards Section */}
+        {/* 
         <section className="py-24 bg-muted">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -120,15 +139,16 @@ export default function CertificatesPage() {
             </div>
           </div>
         </section>
+        */}
 
         {/* Certificates Section */}
         <section className="py-24 bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <p className="text-accent font-medium tracking-widest mb-4">NĂNG LỰC</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 text-balance">Chứng chỉ năng lực</h2>
+              <p className="text-accent font-medium tracking-widest mb-4">{t("cert.certificatesLabel")}</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 text-balance">{t("cert.certificatesTitle")}</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Các chứng chỉ năng lực khẳng định uy tín và chất lượng dịch vụ của Phutraco Holding
+                {t("cert.certificatesDesc")}
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

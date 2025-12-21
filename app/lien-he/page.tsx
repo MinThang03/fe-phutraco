@@ -10,31 +10,34 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Địa chỉ",
-    content: "378 Nguyễn Thiện Thuật, Phường Mỹ Hào, Tỉnh Hưng Yên",
-  },
-  {
-    icon: Phone,
-    title: "Điện thoại",
-    content: "079 467 8568",
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    content: "phutraco@gmail.com",
-  },
-  {
-    icon: Clock,
-    title: "Giờ làm việc",
-    content: "Thứ 2 - Thứ 6: 8:00 - 17:30",
-  },
-]
+import { useLanguage } from "@/lib/language-context"
 
 export default function ContactPage() {
+  const { t, language } = useLanguage()
+  
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: t("contact.address"),
+      content: "378 Nguyễn Thiện Thuật, Phường Mỹ Hào, Tỉnh Hưng Yên",
+    },
+    {
+      icon: Phone,
+      title: t("contact.phone"),
+      content: "079 467 8568",
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      content: "phutraco@gmail.com",
+    },
+    {
+      icon: Clock,
+      title: t("contact.workingHours"),
+      content: t("contact.workingHoursValue"),
+    },
+  ]
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -72,7 +75,7 @@ export default function ContactPage() {
             <div>
               <p className="text-accent font-medium tracking-widest mb-4">PHUTRACO HOLDING</p>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-balance">
-                Liên hệ với chúng tôi
+                {t("contact.title")}
               </h1>
             </div>
           </div>
@@ -84,11 +87,10 @@ export default function ContactPage() {
             <div className="grid lg:grid-cols-2 gap-16">
               {/* Contact Info */}
               <div>
-                <p className="text-accent font-medium tracking-widest mb-4">THÔNG TIN LIÊN HỆ</p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">Kết nối với Phutraco</h2>
+                <p className="text-accent font-medium tracking-widest mb-4">{t("contact.label")}</p>
+                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">{t("contact.subtitle")}</h2>
                 <p className="text-muted-foreground mb-8 leading-relaxed">
-                  Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ Quý khách hàng. Hãy liên hệ với chúng tôi để được tư vấn
-                  về các dịch vụ và giải pháp phù hợp nhất.
+                  {t("contact.desc")}
                 </p>
 
                 <div className="space-y-6 mb-12">
@@ -110,11 +112,11 @@ export default function ContactPage() {
                   <div className="aspect-video rounded-2xl overflow-hidden">
                     <img
                       src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400&q=80"
-                      alt="Văn phòng Phutraco Holding"
+                      alt={language === "vi" ? "Văn phòng Phutraco Holding" : "Phutraco Holding Office"}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <p className="text-sm text-muted-foreground mt-2 text-center">Trụ sở chính Phutraco Holding tại Hưng Yên</p>
+                  <p className="text-sm text-muted-foreground mt-2 text-center">{t("contact.officeImage")}</p>
                 </div>
 
                 {/* Map */}
@@ -127,25 +129,25 @@ export default function ContactPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Vị trí Phutraco Holding"
+                    title={language === "vi" ? "Vị trí Phutraco Holding" : "Phutraco Holding Location"}
                   />
                 </div>
               </div>
 
               {/* Contact Form */}
               <div className="bg-muted rounded-2xl p-8 lg:p-12">
-                <h3 className="text-2xl font-bold text-foreground mb-6">Gửi tin nhắn cho chúng tôi</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-6">{t("contact.formTitle")}</h3>
                 {submitted && (
                   <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-xl">
-                    Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.
+                    {t("contact.successMessage")}
                   </div>
                 )}
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Họ và tên *</Label>
+                    <Label htmlFor="name">{t("contact.fullName")} {t("contact.required")}</Label>
                     <Input
                       id="name"
-                      placeholder="Nhập họ và tên của bạn"
+                      placeholder={t("contact.enterName")}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
@@ -154,11 +156,11 @@ export default function ContactPage() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
+                      <Label htmlFor="email">Email {t("contact.required")}</Label>
                       <Input
                         id="email"
                         type="email"
-                        placeholder="email@example.com"
+                        placeholder={t("contact.enterEmail")}
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
@@ -166,11 +168,11 @@ export default function ContactPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Số điện thoại *</Label>
+                      <Label htmlFor="phone">{t("contact.phone")} {t("contact.required")}</Label>
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="0xxx xxx xxx"
+                        placeholder={t("contact.enterPhone")}
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
@@ -179,10 +181,10 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message">Nội dung *</Label>
+                    <Label htmlFor="message">{t("contact.message")} {t("contact.required")}</Label>
                     <Textarea
                       id="message"
-                      placeholder="Nhập nội dung tin nhắn của bạn..."
+                      placeholder={t("contact.enterMessage")}
                       rows={6}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -192,10 +194,10 @@ export default function ContactPage() {
                   </div>
                   <Button type="submit" className="w-full bg-primary hover:bg-primary/90 py-6" disabled={isSubmitting}>
                     {isSubmitting ? (
-                      "Đang gửi..."
+                      language === "vi" ? "Đang gửi..." : "Sending..."
                     ) : (
                       <>
-                        Gửi tin nhắn
+                        {t("contact.send")}
                         <Send className="ml-2 w-4 h-4" />
                       </>
                     )}

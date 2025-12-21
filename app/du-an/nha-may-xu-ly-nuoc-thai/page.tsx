@@ -1,9 +1,14 @@
+"use client"
+
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { useLanguage } from "@/lib/language-context"
 import { Factory, ArrowRight, Phone, MapPin } from "lucide-react"
 import Link from "next/link"
 
 export default function NhaMayXuLyNuocThaiPage() {
+  const { language } = useLanguage()
+
   return (
     <>
       <Header />
@@ -16,17 +21,19 @@ export default function NhaMayXuLyNuocThaiPage() {
               <div className="max-w-3xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Factory className="w-12 h-12 text-accent" />
-                  <span className="text-accent font-medium tracking-widest">DỰ ÁN TIÊU BIỂU</span>
+                  <span className="text-accent font-medium tracking-widest">
+                    {language === "vi" ? "DỰ ÁN TIÊU BIỂU" : "FEATURED PROJECT"}
+                  </span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-                  Nhà máy xử lý nước thải Đà Nẵng
+                  {language === "vi" ? "Nhà máy xử lý nước thải Đà Nẵng" : "Da Nang Wastewater Treatment Plant"}
                 </h1>
                 <div className="flex items-center gap-2 text-white/90 mb-8">
                   <MapPin className="w-5 h-5" />
-                  <span className="text-xl">Đà Nẵng</span>
+                  <span className="text-xl">{language === "vi" ? "Đà Nẵng" : "Da Nang"}</span>
                 </div>
                 <Link href="/lien-he" className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors">
-                  Tìm hiểu thêm
+                  {language === "vi" ? "Tìm hiểu thêm" : "Learn More"}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -38,31 +45,40 @@ export default function NhaMayXuLyNuocThaiPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-accent font-medium tracking-widest mb-4">TỔNG QUAN DỰ ÁN</p>
+                <p className="text-accent font-medium tracking-widest mb-4">
+                  {language === "vi" ? "TỔNG QUAN DỰ ÁN" : "PROJECT OVERVIEW"}
+                </p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                  Bảo vệ môi trường biển
+                  {language === "vi" ? "Bảo vệ môi trường biển" : "Protecting Marine Environment"}
                 </h2>
                 <p className="text-muted-foreground text-lg mb-6">
-                  Nhà máy xử lý nước thải Đà Nẵng áp dụng công nghệ tiên tiến, 
-                  đảm bảo nước thải đạt chuẩn QCVN trước khi xả ra môi trường.
+                  {language === "vi"
+                    ? "Nhà máy xử lý nước thải Đà Nẵng áp dụng công nghệ tiên tiến, đảm bảo nước thải đạt chuẩn QCVN trước khi xả ra môi trường."
+                    : "Da Nang Wastewater Treatment Plant uses advanced technology to ensure wastewater meets QCVN standards before discharge into the environment."}
                 </p>
                 <div className="grid grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">80K</div>
-                    <div className="text-sm text-muted-foreground">m³/ngày</div>
+                    <div className="text-sm text-muted-foreground">
+                      {language === "vi" ? "m³/ngày" : "m³/day"}
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">95%</div>
-                    <div className="text-sm text-muted-foreground">Hiệu quả xử lý</div>
+                    <div className="text-sm text-muted-foreground">
+                      {language === "vi" ? "Hiệu quả xử lý" : "Treatment Efficiency"}
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">1M+</div>
-                    <div className="text-sm text-muted-foreground">Người thụ hưởng</div>
+                    <div className="text-sm text-muted-foreground">
+                      {language === "vi" ? "Người thụ hưởng" : "Beneficiaries"}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1572449188694-3b47d4932c84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Nhà máy xử lý" className="w-full h-full object-cover" />
+                <img src="https://images.unsplash.com/photo-1572449188694-3b47d4932c84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt={language === "vi" ? "Nhà máy xử lý" : "Treatment Plant"} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -70,10 +86,12 @@ export default function NhaMayXuLyNuocThaiPage() {
 
         <section className="py-20 bg-primary">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Tư vấn xử lý nước thải</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+              {language === "vi" ? "Tư vấn xử lý nước thải" : "Wastewater Treatment Consulting"}
+            </h2>
             <Link href="/lien-he" className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors">
               <Phone className="w-5 h-5" />
-              Liên hệ ngay
+              {language === "vi" ? "Liên hệ ngay" : "Contact Now"}
             </Link>
           </div>
         </section>

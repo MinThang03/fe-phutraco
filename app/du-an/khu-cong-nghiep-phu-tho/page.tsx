@@ -1,9 +1,14 @@
+"use client"
+
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { useLanguage } from "@/lib/language-context"
 import { Factory, ArrowRight, Phone, MapPin } from "lucide-react"
 import Link from "next/link"
 
 export default function KhuCongNghiepPhuThoPage() {
+  const { language } = useLanguage()
+
   return (
     <>
       <Header />
@@ -16,17 +21,19 @@ export default function KhuCongNghiepPhuThoPage() {
               <div className="max-w-3xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Factory className="w-12 h-12 text-accent" />
-                  <span className="text-accent font-medium tracking-widest">DỰ ÁN TIÊU BIỂU</span>
+                  <span className="text-accent font-medium tracking-widest">
+                    {language === "vi" ? "DỰ ÁN TIÊU BIỂU" : "FEATURED PROJECT"}
+                  </span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-                  Khu công nghiệp Phú Thọ
+                  {language === "vi" ? "Khu công nghiệp Phú Thọ" : "Phu Tho Industrial Zone"}
                 </h1>
                 <div className="flex items-center gap-2 text-white/90 mb-8">
                   <MapPin className="w-5 h-5" />
-                  <span className="text-xl">Phú Thọ</span>
+                  <span className="text-xl">{language === "vi" ? "Phú Thọ" : "Phu Tho"}</span>
                 </div>
                 <Link href="/lien-he" className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors">
-                  Tìm hiểu thêm
+                  {language === "vi" ? "Tìm hiểu thêm" : "Learn More"}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -38,31 +45,40 @@ export default function KhuCongNghiepPhuThoPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-accent font-medium tracking-widest mb-4">TỔNG QUAN DỰ ÁN</p>
+                <p className="text-accent font-medium tracking-widest mb-4">
+                  {language === "vi" ? "TỔNG QUAN DỰ ÁN" : "PROJECT OVERVIEW"}
+                </p>
                 <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                  Khu công nghiệp sinh thái
+                  {language === "vi" ? "Khu công nghiệp sinh thái" : "Eco-Industrial Zone"}
                 </h2>
                 <p className="text-muted-foreground text-lg mb-6">
-                  KCN Phú Thọ là khu công nghiệp sinh thái với hạ tầng đồng bộ, thu hút đầu tư FDI 
-                  và tạo việc làm cho hàng nghìn lao động địa phương.
+                  {language === "vi"
+                    ? "KCN Phú Thọ là khu công nghiệp sinh thái với hạ tầng đồng bộ, thu hút đầu tư FDI và tạo việc làm cho hàng nghìn lao động địa phương."
+                    : "Phu Tho Industrial Zone is an eco-industrial zone with complete infrastructure, attracting FDI and creating jobs for thousands of local workers."}
                 </p>
                 <div className="grid grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">200ha</div>
-                    <div className="text-sm text-muted-foreground">Diện tích</div>
+                    <div className="text-sm text-muted-foreground">
+                      {language === "vi" ? "Diện tích" : "Area"}
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">50+</div>
-                    <div className="text-sm text-muted-foreground">Doanh nghiệp</div>
+                    <div className="text-sm text-muted-foreground">
+                      {language === "vi" ? "Doanh nghiệp" : "Enterprises"}
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-primary mb-2">10K+</div>
-                    <div className="text-sm text-muted-foreground">Việc làm</div>
+                    <div className="text-sm text-muted-foreground">
+                      {language === "vi" ? "Việc làm" : "Jobs"}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt="Khu công nghiệp" className="w-full h-full object-cover" />
+                <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=80" alt={language === "vi" ? "Khu công nghiệp" : "Industrial Zone"} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -70,10 +86,12 @@ export default function KhuCongNghiepPhuThoPage() {
 
         <section className="py-20 bg-primary">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Tư vấn phát triển KCN</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+              {language === "vi" ? "Tư vấn phát triển KCN" : "Industrial Zone Development Consulting"}
+            </h2>
             <Link href="/lien-he" className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-primary px-8 py-4 rounded-xl font-medium transition-colors">
               <Phone className="w-5 h-5" />
-              Liên hệ ngay
+              {language === "vi" ? "Liên hệ ngay" : "Contact Now"}
             </Link>
           </div>
         </section>

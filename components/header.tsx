@@ -29,7 +29,7 @@ export default function Header() {
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/images/image.png"
+              src="/images/logo_phutraco.png"
               alt="Phutraco Holding Logo"
               width={48}
               height={48}
