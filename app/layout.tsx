@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Be_Vietnam_Pro, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import Script from "next/script"
 import { LanguageProvider } from "@/lib/language-context"
 import { AuthProvider } from "@/lib/auth-context"
 import { NewsProvider } from "@/lib/news-context"
@@ -45,6 +46,19 @@ export default function RootLayout({
           </AuthProvider>
         </LanguageProvider>
         <Analytics />
+
+        {/* GIM Chatbot */}
+        <Script
+          id="gim-chatbot"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.__gim = window.__gim || {};
+              window.__gim.licenseId = "598674586510341838";
+              (function(c,o){const e=[],n={_handler:null,_version:"1.0",_queue:e,on:function(){return e.push(["on",arguments]),n},call:function(){return e.push(["call",arguments]),n},loadScript:function(){const t=o.createElement("script");t.async=!0,t.type="text/javascript",t.src="https://botsdk.stg.gim.beango.com/index.umd.js",o.head.appendChild(t)}};n.loadScript(),window.GIMBotTool=n})(window,document);
+            `,
+          }}
+        />
       </body>
     </html>
   )
