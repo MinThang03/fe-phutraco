@@ -8,12 +8,12 @@ import Footer from "@/components/footer"
 import { Calendar, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
-import { articlesService, type Article } from "@/services/articles.service"
+import { articlesService, type Article, type ArticleEn } from "@/services/articles.service"
 
 export default function NewsDetailPage() {
   const params = useParams()
   const { language } = useLanguage()
-  const [article, setArticle] = useState<Article | null>(null)
+  const [article, setArticle] = useState<Article | ArticleEn | null>(null)
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -22,13 +22,20 @@ export default function NewsDetailPage() {
       try {
         setIsLoading(true)
         const slug = params.id as string
-        const data = await articlesService.getArticleBySlug(slug)
+        
+        // Fetch dựa trên ngôn ngữ hiện tại
+        let data
+        if (language === 'en') {
+          data = await articlesService.getArticleEnBySlug(slug)
+        } else {
+          data = await articlesService.getArticleBySlug(slug)
+        }
         setArticle(data)
 
-        // Fetch related articles (other published articles)
+        // Fetch related articles (Vietnamese by default for related section)
         const allArticles = await articlesService.getAllArticles(1, 4, 'published')
-        const related = allArticles.data.filter(item => item.id !== data.id).slice(0, 3)
-        setRelatedArticles(related)
+        const relatedVi = allArticles.data.filter(item => item.slug !== slug).slice(0, 3)
+        setRelatedArticles(relatedVi)
       } catch (error) {
         console.error('Failed to fetch article:', error)
       } finally {
@@ -37,7 +44,7 @@ export default function NewsDetailPage() {
     }
 
     fetchArticle()
-  }, [params.id])
+  }, [params.id, language])
 
   if (isLoading) {
     return (
@@ -90,18 +97,18 @@ export default function NewsDetailPage() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pb-12 w-full">
               <div className="flex items-center gap-4 text-white/80 text-sm mb-4">
                 <span className="inline-block px-3 py-1 bg-accent rounded-full text-white font-medium">
-                  {article.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                  {article.status === 'published' ? (language === 'en' ? 'Published' : 'Đã xuất bản') : (language === 'en' ? 'Draft' : 'Bản nháp')}
                 </span>
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
-                  {new Date(article.created_at).toLocaleDateString("vi-VN")}
+                  {new Date(article.created_at).toLocaleDateString(language === 'en' ? "en-US" : "vi-VN")}
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
                 {article.title}
               </h1>
               <p className="text-lg text-white/90">
-                {article.excerpt || "Đọc thêm để xem chi tiết..."}
+                {article.excerpt || (language === 'en' ? "Read more for details..." : "Đọc thêm để xem chi tiết...")}
               </p>
             </div>
           </div>
@@ -154,7 +161,7 @@ export default function NewsDetailPage() {
                     </div>
                     <div className="p-4">
                       <p className="text-xs text-accent font-medium mb-2">
-                        {item.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                        {item.status === 'published' ? (language === 'en' ? 'Published' : 'Đã xuất bản') : (language === 'en' ? 'Draft' : 'Bản nháp')}
                       </p>
                       <h3 className="font-semibold text-foreground line-clamp-2 group-hover:text-accent transition-colors">
                         {item.title}

@@ -11,8 +11,28 @@ export interface Article {
   updated_at: string
 }
 
+export interface ArticleEn {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  thumbnail_url: string
+  author_id: number
+  status: string
+  created_at: string
+  updated_at: string
+}
+
 export interface ArticlesResponse {
   data: Article[]
+  total: number
+  page: number
+  limit: number
+}
+
+export interface ArticlesEnResponse {
+  data: ArticleEn[]
   total: number
   page: number
   limit: number
@@ -134,7 +154,49 @@ class ArticlesService {
       method: 'DELETE',
     })
   }
+
+  // English articles methods
+  async getAllArticlesEn(page: number = 1, limit: number = 10, status?: string): Promise<ArticlesEnResponse> {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    })
+
+    if (status) {
+      params.append('status', status)
+    }
+
+    return this.fetchApi(`/en/all?${params.toString()}`)
+  }
+
+  async getArticleEnById(id: string): Promise<ArticleEn> {
+    return this.fetchApi(`/en/${id}`)
+  }
+
+  async getArticleEnBySlug(slug: string): Promise<ArticleEn> {
+    return this.fetchApi(`/en/slug/${slug}`)
+  }
+
+  async createArticleEn(data: CreateArticleDto): Promise<ArticleEn> {
+    return this.fetchApi('/en', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
+  async updateArticleEn(id: string, data: UpdateArticleDto): Promise<ArticleEn> {
+    return this.fetchApi(`/en/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    })
+  }
+
+  async deleteArticleEn(id: string): Promise<{ message: string }> {
+    return this.fetchApi(`/en/${id}`, {
+      method: 'DELETE',
+    })
+  }
 }
 
 export const articlesService = new ArticlesService()
-export type { Article, ArticlesResponse, CreateArticleDto, UpdateArticleDto }
+export type { Article, ArticleEn, ArticlesResponse, ArticlesEnResponse, CreateArticleDto, UpdateArticleDto }

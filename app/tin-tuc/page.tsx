@@ -6,18 +6,26 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Calendar, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
-import { articlesService, type Article } from "@/services/articles.service"
+import { articlesService, type Article, type ArticleEn } from "@/services/articles.service"
+
+type ArticleData = Article | ArticleEn
 
 export default function NewsPage() {
   const { t, language } = useLanguage()
-  const [articles, setArticles] = useState<Article[]>([])
+  const [articles, setArticles] = useState<ArticleData[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setIsLoading(true)
-        const data = await articlesService.getAllArticles(1, 20, 'published')
+        // Fetch từ API tương ứng dựa trên ngôn ngữ
+        let data
+        if (language === 'en') {
+          data = await articlesService.getAllArticlesEn(1, 20, 'published')
+        } else {
+          data = await articlesService.getAllArticles(1, 20, 'published')
+        }
         setArticles(data.data)
       } catch (error) {
         console.error('Failed to fetch articles:', error)
@@ -27,7 +35,7 @@ export default function NewsPage() {
     }
 
     fetchArticles()
-  }, [])
+  }, [language])
 
   const featuredNews = articles[0]
   const otherNews = articles.slice(1)
@@ -85,14 +93,14 @@ export default function NewsPage() {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {new Date(featuredNews.created_at).toLocaleDateString("vi-VN")}
+                        {new Date(featuredNews.created_at).toLocaleDateString(language === 'en' ? "en-US" : "vi-VN")}
                       </span>
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
                       {featuredNews.title}
                     </h2>
                     <p className="text-muted-foreground mb-6 leading-relaxed">
-                      {featuredNews.excerpt || "Đọc thêm để xem chi tiết..."}
+                      {featuredNews.excerpt || (language === 'en' ? "Read more for details..." : "Đọc thêm để xem chi tiết...")}
                     </p>
                     <Link 
                       href={`/tin-tuc/${featuredNews.slug}`}
@@ -126,18 +134,18 @@ export default function NewsPage() {
                         <div className="p-6">
                           <div className="flex items-center justify-between mb-3">
                             <span className="text-xs font-medium text-accent">
-                              {item.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                              {item.status === 'published' ? (language === 'en' ? 'Published' : 'Đã xuất bản') : (language === 'en' ? 'Draft' : 'Bản nháp')}
                             </span>
                             <span className="text-xs text-muted-foreground flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              {new Date(item.created_at).toLocaleDateString("vi-VN")}
+                              {new Date(item.created_at).toLocaleDateString(language === 'en' ? "en-US" : "vi-VN")}
                             </span>
                           </div>
                           <h3 className="font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-accent transition-colors">
                             {item.title}
                           </h3>
                           <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-                            {item.excerpt || "Đọc thêm để xem chi tiết..."}
+                            {item.excerpt || (language === 'en' ? "Read more for details..." : "Đọc thêm để xem chi tiết...")}
                           </p>
                           <span className="inline-flex items-center text-sm text-primary font-medium group-hover:text-accent transition-colors">
                             {t("news.readMore")}

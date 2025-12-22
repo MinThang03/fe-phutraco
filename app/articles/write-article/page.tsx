@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast'
 import { ArrowLeft } from 'lucide-react'
 import 'react-quill-new/dist/quill.snow.css'
 import '@/styles/quill-custom.css'
-import { articlesService, type Article as ServiceArticle, type CreateArticleDto, type UpdateArticleDto } from '@/services/articles.service'
+import { articlesService, type Article as ServiceArticle, type ArticleEn as ServiceArticleEn, type CreateArticleDto, type UpdateArticleDto } from '@/services/articles.service'
 import { withAuth } from '@/lib/auth-context'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
@@ -33,6 +33,18 @@ interface Article {
   status: string
 }
 
+interface BilingualArticle {
+  id?: string
+  titleVi: string
+  titleEn: string
+  excerptVi: string
+  excerptEn: string
+  contentVi: string
+  contentEn: string
+  thumbnail_url: string
+  status: string
+}
+
 function WriteArticleContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -42,34 +54,58 @@ function WriteArticleContent() {
   const [useHtml, setUseHtml] = useState(false)
   const articleId = searchParams.get('id')
 
-  const [article, setArticle] = useState<Article>({
-    title: '',
-    excerpt: '',
-    content: '',
+  const [article, setArticle] = useState<BilingualArticle>({
+    titleVi: '',
+    titleEn: '',
+    excerptVi: '',
+    excerptEn: '',
+    contentVi: '',
+    contentEn: '',
     thumbnail_url: '',
     status: 'draft'
   })
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
-  const [originalContent, setOriginalContent] = useState('')
+  const [originalContentVi, setOriginalContentVi] = useState('')
+  const [originalContentEn, setOriginalContentEn] = useState('')
 
   // Load article for editing if ID is provided
   useEffect(() => {
     if (articleId) {
       setIsEditing(true)
-      fetchArticle(articleId)
+      fetchArticles(articleId)
     }
   }, [articleId])
 
-  const fetchArticle = async (id: string) => {
+  const fetchArticles = async (id: string) => {
     try {
       setIsLoading(true)
-      const data = await articlesService.getArticleById(id)
-      setArticle(data)
-      setOriginalContent(data.content) // Lưu nội dung gốc
+      // Fetch both Vietnamese and English versions
+      const viData = await articlesService.getArticleById(id)
+      let enData = null
+      try {
+        enData = await articlesService.getArticleEnById(id)
+      } catch (e) {
+        // English version might not exist yet
+      }
+
+      setArticle({
+        id: viData.id,
+        titleVi: viData.title,
+        titleEn: enData?.title || '',
+        excerptVi: viData.excerpt || '',
+        excerptEn: enData?.excerpt || '',
+        contentVi: viData.content,
+        contentEn: enData?.content || '',
+        thumbnail_url: viData.thumbnail_url || '',
+        status: viData.status,
+      })
       
-      // Nếu content có HTML phức tạp (style, div với style, animation), tự động chuyển sang HTML mode
-      if (data.content.includes('<style>') || data.content.includes('animation:') || data.content.includes('margin:') || data.content.includes('padding:')) {
+      setOriginalContentVi(viData.content)
+      setOriginalContentEn(enData?.content || '')
+      
+      // Nếu content có HTML phức tạp, tự động chuyển sang HTML mode
+      if (viData.content.includes('<style>') || viData.content.includes('animation:') || viData.content.includes('margin:') || viData.content.includes('padding:')) {
         setUseHtml(true)
       }
     } catch (error) {
@@ -86,10 +122,10 @@ function WriteArticleContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!article.title || !article.content) {
+    if (!article.titleVi || !article.titleEn || !article.contentVi || !article.contentEn) {
       toast({
         title: 'Lỗi',
-        description: 'Vui lòng nhập tiêu đề và nội dung bài viết',
+        description: 'Vui lòng nhập đầy đủ tiêu đề và nội dung cho cả tiếng Việt và tiếng Anh',
         variant: 'destructive',
       })
       return
@@ -98,25 +134,39 @@ function WriteArticleContent() {
     try {
       setIsLoading(true)
 
+      const viData: CreateArticleDto = {
+        title: article.titleVi,
+        excerpt: article.excerptVi,
+        content: article.contentVi,
+        thumbnail_url: article.thumbnail_url,
+        author_id: 1,
+        status: article.status,
+      }
+
+      const enData: CreateArticleDto = {
+        title: article.titleEn,
+        excerpt: article.excerptEn,
+        content: article.contentEn,
+        thumbnail_url: article.thumbnail_url,
+        author_id: 1,
+        status: article.status,
+      }
+
       if (isEditing && articleId) {
-        const updateData: UpdateArticleDto = {
-          title: article.title,
-          excerpt: article.excerpt,
-          content: article.content,
-          thumbnail_url: article.thumbnail_url,
-          status: article.status,
+        // Update both Vietnamese and English versions
+        await articlesService.updateArticle(articleId, viData)
+        try {
+          await articlesService.updateArticleEn(articleId, enData)
+        } catch (e) {
+          // If English version doesn't exist, create it
+          await articlesService.createArticleEn(enData)
         }
-        await articlesService.updateArticle(articleId, updateData)
       } else {
-        const createData: CreateArticleDto = {
-          title: article.title,
-          excerpt: article.excerpt,
-          content: article.content,
-          thumbnail_url: article.thumbnail_url,
-          author_id: 1, // Temporary author ID since no authentication yet
-          status: article.status,
-        }
-        await articlesService.createArticle(createData)
+        // Create both Vietnamese and English versions with same ID would require backend support
+        // For now, create Vietnamese first, then English
+        const viArticle = await articlesService.createArticle(viData)
+        enData.title = article.titleEn
+        await articlesService.createArticleEn(enData)
       }
 
       toast({
@@ -125,6 +175,7 @@ function WriteArticleContent() {
       })
       router.push('/articles/articles-management')
     } catch (error) {
+      console.error('Error:', error)
       toast({
         title: 'Lỗi',
         description: 'Không thể lưu bài viết',
@@ -135,7 +186,7 @@ function WriteArticleContent() {
     }
   }
 
-  const handleInputChange = (field: keyof Article, value: string) => {
+  const handleInputChange = (field: keyof BilingualArticle, value: string) => {
     setArticle(prev => ({
       ...prev,
       [field]: value
@@ -203,163 +254,245 @@ function WriteArticleContent() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="title">Tiêu đề *</Label>
-              <Input
-                id="title"
-                type="text"
-                value={article.title}
-                onChange={(e) => handleInputChange('title', e.target.value)}
-                placeholder="Nhập tiêu đề bài viết..."
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="excerpt">Tóm tắt</Label>
-              <Textarea
-                id="excerpt"
-                value={article.excerpt}
-                onChange={(e) => handleInputChange('excerpt', e.target.value)}
-                placeholder="Nhập tóm tắt ngắn gọn về bài viết..."
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="thumbnail_url">URL ảnh thumbnail</Label>
-              <div className="flex items-center gap-2">
+            {/* Vietnamese Section */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold mb-4 text-green-700">📌 Tiếng Việt</h3>
+              
+              <div>
+                <Label htmlFor="titleVi">Tiêu đề Tiếng Việt *</Label>
                 <Input
-                  id="thumbnail_url"
-                  type="url"
-                  value={article.thumbnail_url}
-                  onChange={(e) => handleInputChange('thumbnail_url', e.target.value)}
-                  placeholder="https://example.com/image.jpg"
-                  className="flex-1"
+                  id="titleVi"
+                  type="text"
+                  value={article.titleVi}
+                  onChange={(e) => handleInputChange('titleVi', e.target.value)}
+                  placeholder="Nhập tiêu đề bài viết tiếng Việt..."
+                  required
                 />
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="upload-thumbnail"
-                  style={{ display: 'none' }}
-                  onChange={handleImageUpload}
-                  disabled={uploading}
-                />
-                <Button
-                  type="button"
-                  onClick={() => document.getElementById('upload-thumbnail')?.click()}
-                  disabled={uploading}
-                  variant="outline"
-                >
-                  {uploading ? 'Đang tải...' : 'Upload ảnh'}
-                </Button>
               </div>
-              {uploadError && <div className="text-red-500 text-sm mt-1">{uploadError}</div>}
-              {article.thumbnail_url && (
+
+              <div className="mt-4">
+                <Label htmlFor="excerptVi">Tóm tắt Tiếng Việt</Label>
+                <Textarea
+                  id="excerptVi"
+                  value={article.excerptVi}
+                  onChange={(e) => handleInputChange('excerptVi', e.target.value)}
+                  placeholder="Nhập tóm tắt bài viết tiếng Việt..."
+                  rows={2}
+                />
+              </div>
+
+              <div className="mt-4">
+                <Label htmlFor="contentVi">Nội dung Tiếng Việt *</Label>
                 <div className="mt-2">
-                  <img src={article.thumbnail_url} alt="thumbnail" className="h-16 rounded border" />
+                  {useHtml ? (
+                    <Textarea
+                      id="contentVi"
+                      value={article.contentVi}
+                      onChange={(e) => handleInputChange('contentVi', e.target.value)}
+                      placeholder="Nhập mã HTML cho nội dung bài viết tiếng Việt..."
+                      rows={10}
+                    />
+                  ) : (
+                    <ReactQuill
+                      value={article.contentVi}
+                      onChange={(value) => handleInputChange('contentVi', value)}
+                      theme="snow"
+                      placeholder="Nhập nội dung bài viết tiếng Việt..."
+                      modules={{
+                        toolbar: [
+                          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                          ['bold', 'italic', 'underline', 'strike'],
+                          [{ 'color': [] }, { 'background': [] }],
+                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                          [{ 'indent': '-1'}, { 'indent': '+1' }],
+                          [{ 'align': [] }],
+                          ['blockquote', 'code-block'],
+                          ['link', 'image', 'video'],
+                          ['clean']
+                        ],
+                        clipboard: {
+                          matchVisual: false,
+                          dangerouslyPasteHTML: true
+                        }
+                      }}
+                      formats={[
+                        'header', 'bold', 'italic', 'underline', 'strike',
+                        'color', 'background', 'list', 'indent',
+                        'align', 'blockquote', 'code-block', 'link', 'image', 'video'
+                      ]}
+                      style={{ minHeight: '200px' }}
+                      preserveWhitespace={true}
+                    />
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
-            {/* Toggle button for editor mode */}
-            <div className="flex items-center gap-4 mb-2">
-              <Button
-                type="button"
-                className={useHtml ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}
-                onClick={() => {
-                  const hasComplexHTML = originalContent && (originalContent.includes('<style>') || originalContent.includes('animation:') || originalContent.includes('margin:') || originalContent.includes('padding:'));
-                  // Nếu đang ở HTML thuần và muốn chuyển sang Quill nhưng content phức tạp thì chặn
-                  if (useHtml && hasComplexHTML) {
-                    toast({
-                      title: 'Không thể chuyển sang React Quill',
-                      description: 'Nội dung có HTML/CSS phức tạp. Chuyển sang React Quill sẽ làm mất style và format. Hãy chỉnh sửa ở chế độ HTML thuần.',
-                      variant: 'destructive',
-                    });
-                    return;
-                  }
-                  // Khôi phục nội dung gốc khi chuyển mode
-                  if (isEditing && originalContent) {
-                    setArticle(prev => ({ ...prev, content: originalContent }))
-                  }
-                  setUseHtml((prev) => !prev)
-                }}
-              >
-                {useHtml ? 'HTML thuần' : 'React Quill'}
-              </Button>
-              <span className="text-muted-foreground text-sm">Chọn chế độ nhập nội dung</span>
-              {/* Đã xoá button khôi phục gốc */}
+            {/* English Section */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold mb-4 text-blue-700">📌 English (Tiếng Anh)</h3>
+              
+              <div>
+                <Label htmlFor="titleEn">English Title *</Label>
+                <Input
+                  id="titleEn"
+                  type="text"
+                  value={article.titleEn}
+                  onChange={(e) => handleInputChange('titleEn', e.target.value)}
+                  placeholder="Enter English article title..."
+                  required
+                />
+              </div>
+
+              <div className="mt-4">
+                <Label htmlFor="excerptEn">English Excerpt</Label>
+                <Textarea
+                  id="excerptEn"
+                  value={article.excerptEn}
+                  onChange={(e) => handleInputChange('excerptEn', e.target.value)}
+                  placeholder="Enter English article excerpt..."
+                  rows={2}
+                />
+              </div>
+
+              <div className="mt-4">
+                <Label htmlFor="contentEn">English Content *</Label>
+                <div className="mt-2">
+                  {useHtml ? (
+                    <Textarea
+                      id="contentEn"
+                      value={article.contentEn}
+                      onChange={(e) => handleInputChange('contentEn', e.target.value)}
+                      placeholder="Enter HTML code for English article content..."
+                      rows={10}
+                    />
+                  ) : (
+                    <ReactQuill
+                      value={article.contentEn}
+                      onChange={(value) => handleInputChange('contentEn', value)}
+                      theme="snow"
+                      placeholder="Enter English article content..."
+                      modules={{
+                        toolbar: [
+                          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                          ['bold', 'italic', 'underline', 'strike'],
+                          [{ 'color': [] }, { 'background': [] }],
+                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                          [{ 'indent': '-1'}, { 'indent': '+1' }],
+                          [{ 'align': [] }],
+                          ['blockquote', 'code-block'],
+                          ['link', 'image', 'video'],
+                          ['clean']
+                        ],
+                        clipboard: {
+                          matchVisual: false,
+                          dangerouslyPasteHTML: true
+                        }
+                      }}
+                      formats={[
+                        'header', 'bold', 'italic', 'underline', 'strike',
+                        'color', 'background', 'list', 'indent',
+                        'align', 'blockquote', 'code-block', 'link', 'image', 'video'
+                      ]}
+                      style={{ minHeight: '200px' }}
+                      preserveWhitespace={true}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div>
-              <Label htmlFor="content">Nội dung *</Label>
-              <div className="mt-2">
-                {useHtml ? (
-                  <Textarea
-                    id="content"
-                    value={article.content}
-                    onChange={(e) => handleInputChange('content', e.target.value)}
-                    placeholder="Nhập mã HTML cho nội dung bài viết..."
-                    rows={12}
+            {/* Common Fields */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold mb-4">⚙️ Cài đặt chung</h3>
+
+              <div>
+                <Label htmlFor="thumbnail_url">URL ảnh thumbnail</Label>
+                <div className="flex items-center gap-2 mt-2">
+                  <Input
+                    id="thumbnail_url"
+                    type="url"
+                    value={article.thumbnail_url}
+                    onChange={(e) => handleInputChange('thumbnail_url', e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="flex-1"
                   />
-                ) : (
-                  <ReactQuill
-                    value={article.content}
-                    onChange={(value) => handleInputChange('content', value)}
-                    theme="snow"
-                    placeholder="Nhập nội dung bài viết..."
-                    modules={{
-                      toolbar: [
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        [{ 'indent': '-1'}, { 'indent': '+1' }],
-                        [{ 'align': [] }],
-                        ['blockquote', 'code-block'],
-                        ['link', 'image', 'video'],
-                        ['clean']
-                      ],
-                      clipboard: {
-                        matchVisual: false,
-                        dangerouslyPasteHTML: true
-                      }
-                    }}
-                    formats={[
-                      'header', 'bold', 'italic', 'underline', 'strike',
-                      'color', 'background', 'list', 'indent',
-                      'align', 'blockquote', 'code-block', 'link', 'image', 'video'
-                    ]}
-                    style={{ minHeight: '200px' }}
-                    preserveWhitespace={true}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="upload-thumbnail"
+                    style={{ display: 'none' }}
+                    onChange={handleImageUpload}
+                    disabled={uploading}
                   />
+                  <Button
+                    type="button"
+                    onClick={() => document.getElementById('upload-thumbnail')?.click()}
+                    disabled={uploading}
+                    variant="outline"
+                  >
+                    {uploading ? 'Đang tải...' : 'Upload ảnh'}
+                  </Button>
+                </div>
+                {uploadError && <div className="text-red-500 text-sm mt-1">{uploadError}</div>}
+                {article.thumbnail_url && (
+                  <div className="mt-2">
+                    <img src={article.thumbnail_url} alt="thumbnail" className="h-16 rounded border" />
+                  </div>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                {useHtml
-                  ? 'Nhập mã HTML trực tiếp cho nội dung bài viết.'
-                  : 'Sử dụng thanh công cụ để định dạng văn bản, thêm ảnh, liên kết...'}
-              </p>
+
+              <div className="mt-4">
+                <Label htmlFor="status">Trạng thái</Label>
+                <Select
+                  value={article.status}
+                  onValueChange={(value) => handleInputChange('status', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="draft">Bản nháp</SelectItem>
+                    <SelectItem value="published">Đã xuất bản</SelectItem>
+                    <SelectItem value="archived">Lưu trữ</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Toggle button for editor mode */}
+              <div className="flex items-center gap-4 mt-4">
+                <Button
+                  type="button"
+                  className={useHtml ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}
+                  onClick={() => {
+                    const hasComplexHTMLVi = originalContentVi && (originalContentVi.includes('<style>') || originalContentVi.includes('animation:') || originalContentVi.includes('margin:') || originalContentVi.includes('padding:'));
+                    const hasComplexHTMLEn = originalContentEn && (originalContentEn.includes('<style>') || originalContentEn.includes('animation:') || originalContentEn.includes('margin:') || originalContentEn.includes('padding:'));
+                    
+                    if (useHtml && (hasComplexHTMLVi || hasComplexHTMLEn)) {
+                      toast({
+                        title: 'Không thể chuyển sang React Quill',
+                        description: 'Nội dung có HTML/CSS phức tạp. Hãy chỉnh sửa ở chế độ HTML thuần.',
+                        variant: 'destructive',
+                      });
+                      return;
+                    }
+                    if (isEditing && originalContentVi) {
+                      setArticle(prev => ({
+                        ...prev,
+                        contentVi: originalContentVi,
+                        contentEn: originalContentEn
+                      }))
+                    }
+                    setUseHtml((prev) => !prev)
+                  }}
+                >
+                  {useHtml ? 'HTML thuần' : 'React Quill'}
+                </Button>
+                <span className="text-muted-foreground text-sm">Chọn chế độ nhập nội dung</span>
+              </div>
             </div>
 
-            <div>
-              <Label htmlFor="status">Trạng thái</Label>
-              <Select
-                value={article.status}
-                onValueChange={(value) => handleInputChange('status', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">Bản nháp</SelectItem>
-                  <SelectItem value="published">Đã xuất bản</SelectItem>
-                  <SelectItem value="archived">Lưu trữ</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4">
               <Button
                 type="submit"
                 disabled={isLoading}
