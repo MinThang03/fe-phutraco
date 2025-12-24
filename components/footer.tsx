@@ -49,7 +49,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-accent shrink-0" />
-                <span>phutraco@gmail.com</span>
+                <span>info@phutraco.vn</span>
               </div>
               <div className="flex items-center gap-3">
                 <Globe className="w-5 h-5 text-accent shrink-0" />

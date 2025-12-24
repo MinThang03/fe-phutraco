@@ -29,7 +29,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: "Email",
-      content: "phutraco@gmail.com",
+      content: "info@phutraco.vn",
     },
     {
       icon: Clock,
