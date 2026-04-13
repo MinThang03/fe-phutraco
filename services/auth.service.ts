@@ -1,3 +1,5 @@
+import { fetchWithAuth, fetchJsonWithAuth } from '@/lib/fetch-wrapper';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
 
 export interface User {
@@ -25,6 +27,7 @@ class AuthService {
   }
 
   async login(email: string, password: string): Promise<LoginResponse> {
+    // Login should NOT use fetchWithAuth wrapper to avoid circular refresh
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
@@ -49,6 +52,7 @@ class AuthService {
   }
 
   async refresh(): Promise<string> {
+    // Refresh should NOT use fetchWithAuth to avoid circular refresh
     const response = await fetch(`${API_URL}/auth/refresh`, {
       method: 'POST',
       credentials: 'include',
@@ -73,13 +77,12 @@ class AuthService {
 
   async logout(): Promise<void> {
     try {
-      await fetch(`${API_URL}/auth/logout`, {
+      await fetchWithAuth(`${API_URL}/auth/logout`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
-        },
-        credentials: 'include',
       });
+    } catch (error) {
+      // Even if logout fails on server, clear local state
+      console.error('Logout request failed:', error);
     } finally {
       this.accessToken = null;
       if (typeof window !== 'undefined') {
@@ -90,13 +93,12 @@ class AuthService {
 
   async logoutAll(): Promise<void> {
     try {
-      await fetch(`${API_URL}/auth/logout-all`, {
+      await fetchWithAuth(`${API_URL}/auth/logout-all`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
-        },
-        credentials: 'include',
       });
+    } catch (error) {
+      // Even if logout fails on server, clear local state
+      console.error('Logout-all request failed:', error);
     } finally {
       this.accessToken = null;
       if (typeof window !== 'undefined') {
@@ -110,7 +112,7 @@ class AuthService {
     if (!this.accessToken) {
       try {
         await this.refresh();
-        // After refresh, access token should be set
+        // After refresh, access token should be set, fall through to fetch user
       } catch (error) {
         // No valid refresh token cookie
         return null;
@@ -118,23 +120,19 @@ class AuthService {
     }
 
     try {
-      const response = await fetch(`${API_URL}/auth/me`, {
+      const response = await fetchWithAuth(`${API_URL}/auth/me`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
-        },
-        credentials: 'include',
       });
 
       if (!response.ok) {
-        // Try to refresh token once
-        await this.refresh();
-        return this.getCurrentUser();
+        // If response is not ok, just return null instead of infinite retry
+        return null;
       }
 
       const data = await response.json();
       return data.user;
     } catch (error) {
+      // On any error, clear token and return null
       this.accessToken = null;
       if (typeof window !== 'undefined') {
         localStorage.removeItem(ACCESS_TOKEN_KEY);

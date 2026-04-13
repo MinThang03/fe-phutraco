@@ -160,9 +160,21 @@ function WriteArticleContent() {
       const formData = new FormData()
       formData.append('image', file)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
+      
+      // Get access token and set authorization header
+      const { authService } = await import('@/services/auth.service')
+      const accessToken = authService.getAccessToken()
+      
+      const headers: HeadersInit = {}
+      if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`
+      }
+      
       const res = await fetch(apiUrl + '/images/upload', {
         method: 'POST',
         body: formData,
+        credentials: 'include',
+        headers,
       })
       if (!res.ok) throw new Error('Upload failed')
       const data = await res.json()

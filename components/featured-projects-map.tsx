@@ -186,8 +186,8 @@ export default function FeaturedProjectsMap() {
               </h3>
               <p className="text-muted-foreground mb-8">
                 {language === "vi"
-                  ? "Tập đoàn Sun Group đã để lại những dấu ấn đặc sắc trong từng công trình, dự án, sự kiện."
-                  : "Sun Group has left distinctive marks in every project and event."}
+                  ? "Tập đoàn Phutraco Holding đã để lại những dấu ấn đặc sắc trong từng công trình, dự án, sự kiện."
+                  : "Phutraco Holding has left distinctive marks in every project and event."}
               </p>
 
               {projects.map((project) => (

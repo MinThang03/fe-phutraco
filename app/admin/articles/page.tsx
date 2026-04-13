@@ -26,11 +26,9 @@ function AdminArticlesPage() {
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`)
-      if (response.ok) {
-        const data = await response.json()
-        setArticles(data.articles || [])
-      }
+      const { fetchJsonWithAuth } = await import('@/lib/fetch-wrapper')
+      const data = await fetchJsonWithAuth<{ articles: Article[] }>(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`)
+      setArticles(data.articles || [])
     } catch (error) {
       console.error("Failed to fetch articles:", error)
     } finally {
@@ -42,16 +40,11 @@ function AdminArticlesPage() {
     if (!confirm("Bạn có chắc chắn muốn xóa bài viết này?")) return
 
     try {
-      // TODO: Add authorization header with access token
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${id}`, {
+      const { fetchJsonWithAuth } = await import('@/lib/fetch-wrapper')
+      await fetchJsonWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${id}`, {
         method: "DELETE",
       })
-
-      if (response.ok) {
-        setArticles(articles.filter((article) => article.id !== id))
-      } else {
-        alert("Không thể xóa bài viết. Vui lòng thử lại.")
-      }
+      setArticles(articles.filter((article) => article.id !== id))
     } catch (error) {
       console.error("Failed to delete article:", error)
       alert("Đã có lỗi xảy ra.")
